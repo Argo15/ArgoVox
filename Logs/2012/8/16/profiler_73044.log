@@ -1,0 +1,21 @@
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Motion Blur avg: 1199
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Motion Blur min: 1000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Motion Blur max: 2000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Final avg: 1000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Final min: 1000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Final max: 1000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Light avg: 1114
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Light min: 1000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Light max: 3000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Atmosphere avg: 3253
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Atmosphere min: 3000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw Atmosphere max: 5000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw GBuffer avg: 8846
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw GBuffer min: 5000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Draw GBuffer max: 65004
+20:17:27 8/16/2012 [PROFILER] [INFO]: Build Shadow Maps avg: 44663
+20:17:27 8/16/2012 [PROFILER] [INFO]: Build Shadow Maps min: 26002
+20:17:27 8/16/2012 [PROFILER] [INFO]: Build Shadow Maps max: 165009
+20:17:27 8/16/2012 [PROFILER] [INFO]: Update Dynamics World avg: 1070
+20:17:27 8/16/2012 [PROFILER] [INFO]: Update Dynamics World min: 1000
+20:17:27 8/16/2012 [PROFILER] [INFO]: Update Dynamics World max: 3001

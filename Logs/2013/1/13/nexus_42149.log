@@ -1,0 +1,23 @@
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Loading Textures
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Done Loading Textures
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Loading Models
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Done Loading Models
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Loading Materials
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Done Loading Materials
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Loading Shaders
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Done Loading Shaders
+11:42:29 1/13/2013 [GAME] [INFO]: Starting user session: Argo
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Loading Chunks
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Done Loading Chunks
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Loading Tiles
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: gBuffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Atmosphere Buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Light Buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Final Buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Motion Blur Buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Depth buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Depth buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Depth buffer Done
+11:42:29 1/13/2013 [GRAPHICS] [INFO]: Depth buffer Done
+11:42:33 1/13/2013 [GAME] [INFO]: Ending user session: Argo
