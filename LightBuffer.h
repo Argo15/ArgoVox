@@ -14,7 +14,10 @@
 #include "Camera.h"
 #include "WorldState.h"
 #include "DirectLight.h"
+#include "CascadedShadowMap.h"
 using namespace std;
+
+class CascadedShadowMap;
 
 class LightBuffer 
 {
@@ -26,6 +29,7 @@ private:
 	int m_nWidth, m_nHeight;
 
 	DirectLight *light;
+	CascadedShadowMap *shadowMap;
 
 public:
 	LightBuffer(int nWidth, int nHeight);

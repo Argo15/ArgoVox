@@ -7,7 +7,7 @@ ShadowMapManager::ShadowMapManager()
 
 void ShadowMapManager::tick(int m_nFps)
 {
-	m_sunShadow->buildShadowMaps();
+	//m_sunShadow->buildShadowMaps();
 }
 
 CascadedShadowMap *ShadowMapManager::getSunShadow()

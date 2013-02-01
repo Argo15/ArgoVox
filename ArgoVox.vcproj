@@ -1421,11 +1421,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\f_dShadow.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_GBuffer.glsl"
 				>
 			</File>
 			<File
 				RelativePath=".\Data\Shaders\f_material.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\v_dShadow.glsl"
 				>
 			</File>
 			<File

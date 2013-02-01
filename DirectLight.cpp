@@ -16,7 +16,7 @@ DirectLight::DirectLight()
 	m_nDirection[2]=0;
 	m_nDirection[3]=0;
 	Quaternion quat;
-	quat.createQuaternion(0.9f*(2*3.1415f),2.0f,0.0f,-1.0f);
+	quat.createQuaternion(0.9f*(2*3.1415f),-2.0f,0.0f,1.0f);
 	rotate(quat);
 	m_bEnabled=true;
 }

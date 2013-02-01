@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "MatrixManager.h"
 #include "ShaderManager.h"
+#include "SceneManager.h"
 
 #define ANG2RAD 3.14159265358979323846/180.0
 
@@ -24,15 +25,12 @@ CascadedShadowMap::CascadedShadowMap(int nSize, float nSlice1, float nSlice2, fl
 	this->m_nSize = nSize;
 }
 
-void CascadedShadowMap::buildShadowMaps()
+void CascadedShadowMap::buildShadowMaps(Camera *camera, View *view, DirectLight *light)
 {
-	Profiler::getInstance()->startProfile("Build Shadow Maps");
+	//Profiler::getInstance()->startProfile("Build Shadow Maps");
 	float nSlice[] = {0.0, m_nSlices[0], m_nSlices[1], m_nSlices[2], 1.0};
-	WorldState *worldState = (WorldState *) GameState::GAMESTATE;
-	Camera *camera = worldState->getPhysicsManager()->getWorldCameras()->getCurrentCamera();
-	View *view = worldState->getRenderer()->getView();
-	Frustum *frustum = worldState->getRenderer()->getFrustum();
-	DirectLight *sun = worldState->getWorldManager()->getSun();
+	Frustum *frustum = new Frustum();
+	frustum->getFrustum(camera, view);
 
 	m_shadowMaps[3]->bind();
 	glClearDepth(1.0);
@@ -40,13 +38,13 @@ void CascadedShadowMap::buildShadowMaps()
 	glDisable(GL_CULL_FACE);
 	for (int i=0; i<4; i++)
 	{
-		Camera *lightCamera = createLightCamera(nSlice[i],nSlice[i+1],camera,view,sun);
+		Camera *lightCamera = createLightCamera(nSlice[i],nSlice[i+1],camera,view,light);
 		View *lightView = createLightView(nSlice[i],nSlice[i+1],camera,lightCamera,view,frustum);
 		Frustum *lightFrustum = new Frustum();
 		lightFrustum->getOrthoFrustum(lightCamera,lightView);
 
-		MatrixManager::getInstance()->pushMatrix4(MODELVIEW, glm::mat4(1.0f));
-		MatrixManager::getInstance()->pushMatrix4(PROJECTION, glm::mat4(1.0f));
+		MatrixManager::getInstance()->putMatrix4(MODELVIEW, glm::mat4(1.0f));
+		MatrixManager::getInstance()->putMatrix4(PROJECTION, glm::mat4(1.0f));
 		
 		m_shadowMaps[i]->bind();
 		glClearDepth(1.0);
@@ -55,29 +53,32 @@ void CascadedShadowMap::buildShadowMaps()
 		glPushAttrib( GL_VIEWPORT_BIT );
 		glViewport( 0, 0, m_nSize, m_nSize);
 		lightView->use3D(false);
+
+		GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("DirectShadow");
+		glslProgram->use();
+
+		
 		glm::mat4 cameraMat = glm::mat4(1.0f);
 		cameraMat = lightCamera->transformToMatrix(cameraMat);
+
 		m_m4LightMatrix[i] = MatrixManager::getInstance()->getMatrix4(PROJECTION) * cameraMat;
-		GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("SunShadow");
-		glslProgram->use();
-		MatrixManager::getInstance()->multMatrix4(PROJECTION, cameraMat);
-		glslProgram->sendUniform("projectionCameraMatrix",&MatrixManager::getInstance()->getMatrix4(PROJECTION)[0][0]);
-		glslProgram->sendUniform("camPos",camera->getEyeX(),camera->getEyeY(),camera->getEyeZ());
+		MatrixManager::getInstance()->putMatrix4(MODELVIEW, cameraMat);
+
+		glslProgram->sendUniform("projectionMatrix", &MatrixManager::getInstance()->getMatrix4(PROJECTION)[0][0]);
 		glBindAttribLocation(glslProgram->getHandle(), 0, "v_vertex");
 
-		worldState->getWorldManager()->renderWorld("SunShadow",lightFrustum);
-		
+		SceneManager::getInstance()->draw("DirectShadow");
 		glslProgram->disable();
+
 		glPopAttrib();
 		m_shadowMaps[i]->unbind();
-
 
 		delete lightCamera;
 		delete lightView;
 		delete lightFrustum;
 	}
 	glEnable(GL_CULL_FACE);
-	Profiler::getInstance()->endProfile();
+	//Profiler::getInstance()->endProfile();
 }
 
 Camera *CascadedShadowMap::createLightCamera(float nSlice1, float nSlice2, Camera *camera, View *view, DirectLight *dLight)

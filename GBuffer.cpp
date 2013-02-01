@@ -116,6 +116,10 @@ void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid)
 
 	SceneManager::getInstance()->draw("GBuffer");
 	glslProgram->disable();
+
+	MaterialManager::getInstance()->getMaterial("Default")->sendToShader("GBuffer");
+	SceneManager::getInstance()->drawTransformers();
+
 	unbind();
 	Profiler::getInstance()->endProfile();
 }

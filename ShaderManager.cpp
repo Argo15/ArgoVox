@@ -40,8 +40,8 @@ void ShaderManager::initialize()
 	loadShader("GBuffer", "Data/Shaders/v_GBuffer.glsl","Data/Shaders/f_GBuffer.glsl");
 	loadShader("DirectLight", "Data/Shaders/v_light.glsl","Data/Shaders/f_dlight.glsl");
 	loadShader("Final", "Data/Shaders/v_final.glsl","Data/Shaders/f_final.glsl");
-	/*loadShader("SunShadow", "Data/Shaders/v_dShadow.glsl","Data/Shaders/f_dShadow.glsl");
-	loadShader("MotionBlur", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_motionBlur.glsl");
+	loadShader("DirectShadow", "Data/Shaders/v_dShadow.glsl","Data/Shaders/f_dShadow.glsl");
+	/*loadShader("MotionBlur", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_motionBlur.glsl");
 	loadShader("Atmosphere", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_atmosphere.glsl");*/
 	Logging::GRAPHICS->info("Done Loading Shaders");
 }

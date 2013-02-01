@@ -50,6 +50,7 @@ LightBuffer::LightBuffer(int nWidth, int nHeight)
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 	light = new DirectLight();
+	shadowMap = new CascadedShadowMap(1024);
 }
 
 LightBuffer::~LightBuffer()
@@ -59,6 +60,8 @@ LightBuffer::~LightBuffer()
 
 void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlowTex, View *view, Camera *camera)
 {
+	shadowMap->buildShadowMaps(camera, view, light);
+
 	Profiler::getInstance()->startProfile("Draw Light");
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("DirectLight");
 	glslProgram->use();
@@ -103,7 +106,7 @@ void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlow
 	glslProgram->sendUniform("depthTex",1);
 	glslProgram->sendUniform("glowTex",2);
 
-	//worldState->getShadowMapManager()->getSunShadow()->sendToShader("DirectLight");
+	shadowMap->sendToShader("DirectLight");
 
 	drawScreenShader(0,0,1.0f,1.0f);
 	glslProgram->disable();

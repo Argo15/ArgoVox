@@ -23,7 +23,7 @@ public:
 	CascadedShadowMap();
 	CascadedShadowMap(int nSize, float nSlice1 = 0.15, float nSlice2 = 0.3, float nSlice3 = 0.6);
 
-	void buildShadowMaps();
+	void buildShadowMaps(Camera *camera, View *view, DirectLight *light);
 	void bindShadowMap(int nMap);
 	void sendToShader(string sShader);
 };
