@@ -79,6 +79,7 @@ void main() {
 		}
 	}
 	shadow /= sfilter*sfilter;
+	shadow = 1.0;
 		
 	vec3 direction = normalize(light.direction);
 	vec3 look = normalize(worldPos.xyz-cameraPos);

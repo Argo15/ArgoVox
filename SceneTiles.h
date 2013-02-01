@@ -3,7 +3,7 @@
 
 #include "TileManager.h"
 
-enum TileMode{ GREEN, RED, YELLOW };
+//enum TileMode{ GREEN, RED, YELLOW };
 
 class SceneTiles {
 private:

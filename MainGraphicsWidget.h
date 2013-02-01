@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "TileManager.h"
 #include "Grid.h"
+#include "GBuffer.h"
+#include "LightBuffer.h"
 
 class MainGraphicsWidget : public QGLWidget
 {
@@ -18,6 +20,13 @@ private:
 	Camera *camera;
 	TileManager *tileManager;
 	Grid *myGrid;
+	
+	GBuffer *m_gBuffer;
+	LightBuffer *m_lightBuffer;
+	FinalBuffer *m_finalBuffer;
+
+	void forwardRender();
+	void deferredRender();
 
 
 protected:

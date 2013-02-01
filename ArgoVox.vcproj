@@ -126,9 +126,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/NODEFAULTLIB:library"
 				AdditionalDependencies="libboost_date_time-vc100-mt-gd-1_49.lib qtmaind.lib QtCored4.lib QtGuid4.lib QtOpenGLd4.lib opengl32.lib glu32.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
+				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames="libboost_date_time-vc90-mt-gd-1_49.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -1415,7 +1417,23 @@
 			Name="Resouces"
 			>
 			<File
+				RelativePath=".\Data\Shaders\f_dlight.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\f_GBuffer.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_material.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\v_GBuffer.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\v_light.glsl"
 				>
 			</File>
 			<File

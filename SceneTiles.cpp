@@ -5,7 +5,7 @@
 SceneTiles::SceneTiles() {
 	for (int i=0; i<10; i++) {
 		for (int j=0; j<10; j++) {
-			tileModes[i][j] = GREEN;
+			tileModes[i][j] = 0;
 			updatable[i][j] = true;
 		}
 	}

@@ -1,5 +1,5 @@
-#ifndef WORLDSTATE_H
-#define WORLDSTATE_H
+#ifndef NOSTATE_H
+#define NOSTATE_H
 
 #include "GameState.h"
 

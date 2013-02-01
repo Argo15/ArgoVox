@@ -41,7 +41,7 @@ public:
 	void addChunk(string chunk);
 	void addTile(string tile);
 	void clear();
-	void draw();
+	void draw(string shader);
 	void drawTransformers();
 	void setSelectedActor(int id);
 	Actor *getSelectedActor();

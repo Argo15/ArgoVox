@@ -13,6 +13,7 @@
 #include "GLSLProgram.h"
 #include "Camera.h"
 #include "WorldState.h"
+#include "DirectLight.h"
 using namespace std;
 
 class LightBuffer 
@@ -24,11 +25,13 @@ private:
 
 	int m_nWidth, m_nHeight;
 
+	DirectLight *light;
+
 public:
 	LightBuffer(int nWidth, int nHeight);
 	~LightBuffer();
 
-	void drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlowTex, View *view);
+	void drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlowTex, View *view, Camera *camera);
 
 	void bind();
 	void unbind();

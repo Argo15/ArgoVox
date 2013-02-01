@@ -96,7 +96,7 @@ void SceneManager::clear() {
 	setSelectedActor(-1);
 }
 
-void SceneManager::draw() {
+void SceneManager::draw(string shader) {
 	for (map<int,Actor*>::iterator it = actors->begin() ; it != actors->end(); it++ ) {
 		if ((!isPhysicsObject((*it).first) && displayScene) || (isPhysicsObject((*it).first) && displayPhysics)) {
 			Actor *actor = (*it).second;
@@ -104,7 +104,7 @@ void SceneManager::draw() {
 			MatrixManager::getInstance()->pushMatrix3(NORMAL);
 				MatrixManager::getInstance()->putMatrix4(MODELVIEW, actor->transformToMatrix(MatrixManager::getInstance()->getMatrix4(MODELVIEW)));
 				MatrixManager::getInstance()->putMatrix3(NORMAL, actor->transformToMatrix(MatrixManager::getInstance()->getMatrix3(NORMAL)));
-				actor->drawActor("Basic");
+				actor->drawActor(shader);
 			MatrixManager::getInstance()->popMatrix4(MODELVIEW);
 			MatrixManager::getInstance()->popMatrix3(NORMAL);
 		}

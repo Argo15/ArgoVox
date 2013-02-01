@@ -5,9 +5,9 @@ enum RenderState
 {
 	FORWARD, 
 	FINAL, 
+	COLOR, 
 	POSITION, 
 	NORMALMAP, 
-	COLOR, 
 	LIGHTING, 
 	SSAO, 
 	SPECULAR,

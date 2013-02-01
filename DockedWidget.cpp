@@ -17,13 +17,11 @@ DockedWidget::DockedWidget(QGLWidget *glWidget)
 		QHBoxLayout *actorDisplayLayout = new QHBoxLayout;
 
 	filePhysicsLayout->addWidget(FileWidget::getInstance());
-	filePhysicsLayout->addWidget(PhysicsWidget::getInstance());
 
 	modelTextureLayout->addWidget(ModelWidget::getInstance(glWidget));
 	modelTextureLayout->addWidget(TextureWidget::getInstance(glWidget));
 
 	actorDisplayLayout->addWidget(ActorWidget::getInstance());
-	actorDisplayLayout->addWidget(DisplayWidget::getInstance());
 
 	mainLayout->addLayout(filePhysicsLayout);
 	mainLayout->addLayout(modelTextureLayout);
@@ -33,7 +31,7 @@ DockedWidget::DockedWidget(QGLWidget *glWidget)
 
 	mainWidget->setLayout(mainLayout);
 	mainWidget->setFixedHeight(mainWidget->sizeHint().height());
-	mainWidget->setFixedWidth(400);
+	mainWidget->setFixedWidth(mainWidget->sizeHint().width());
 
 	QScrollArea *scrollArea = new QScrollArea;
 	scrollArea->setWidget(mainWidget);

@@ -11,6 +11,8 @@
 #include "MaterialManager.h"
 #include "ShaderManager.h"
 #include "InputManager.h"
+#include "RenderState.h"
+#include "NoState.h"
 
 MainGraphicsWidget::MainGraphicsWidget(QGLFormat fmt, QWidget *parent)
     : QGLWidget(fmt,parent) 
@@ -52,6 +54,10 @@ void MainGraphicsWidget::initializeGL() {
 
 	myGrid = new Grid(10, 10);
 	myGrid->setColor(1.0, 1.0 ,1.0);
+
+	m_gBuffer = new GBuffer(1280,720);
+	m_lightBuffer = new LightBuffer(1280,720);
+	m_finalBuffer = new FinalBuffer(1280,720);
 }
 
 void MainGraphicsWidget::resizeGL(int width, int height) {
@@ -67,7 +73,8 @@ void MainGraphicsWidget::update(float fps) {
 	camera->move(60/fps);
 }
 
-void MainGraphicsWidget::render() {
+void MainGraphicsWidget::forwardRender()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	MatrixManager::getInstance()->putMatrix4(MODELVIEW, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix4(PROJECTION, glm::mat4(1.0f));
@@ -102,11 +109,74 @@ void MainGraphicsWidget::render() {
 	MaterialManager::getInstance()->getMaterial("Default")->sendToShader("Basic");
 	myGrid->draw();
 
-	SceneManager::getInstance()->draw();
+	SceneManager::getInstance()->draw("Basic");
 
 	glslProgram->disable();
 
 	SceneManager::getInstance()->drawTransformers();
+}
+	
+void MainGraphicsWidget::deferredRender()
+{
+	m_gBuffer->drawToBuffer(view, camera, myGrid);
+	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
+	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), view);
+
+	glDisable(GL_LIGHTING);
+	glActiveTextureARB(GL_TEXTURE2);
+	glDisable(GL_TEXTURE_2D);
+	glActiveTextureARB(GL_TEXTURE1);
+	glDisable(GL_TEXTURE_2D);
+	glActiveTextureARB(GL_TEXTURE0);
+	glEnable(GL_TEXTURE_2D);
+
+	glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 1.0, 0, 1.0);
+	view->viewport();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+	if (RenderStateManager::RENDERSTATE == FINAL)
+	{
+		m_finalBuffer->bindFinalTex();
+	}
+	if (RenderStateManager::RENDERSTATE == POSITION)
+	{
+		m_gBuffer->bindDepthTex();
+	}
+	if (RenderStateManager::RENDERSTATE == NORMALMAP)	
+	{
+		m_gBuffer->bindNormalTex();
+	}
+	if (RenderStateManager::RENDERSTATE == COLOR)	
+	{
+		m_gBuffer->bindColorTex();
+	}
+	if (RenderStateManager::RENDERSTATE == LIGHTING)
+	{
+		m_lightBuffer->bindLightTex();
+	}
+	if (RenderStateManager::RENDERSTATE == SPECULAR)
+	{
+		m_lightBuffer->bindGlowTex();
+	}
+	glColor3f(1.0f,1.0f,1.0f);
+	drawScreen(0.0,0.0,1.0,1.0);
+}
+
+void MainGraphicsWidget::render()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (RenderStateManager::RENDERSTATE == FORWARD)
+	{
+		forwardRender();
+	}
+	else
+	{
+		deferredRender();
+	}
 }
 
 
@@ -114,6 +184,12 @@ void MainGraphicsWidget::keyPressEvent (QKeyEvent *event) {
 	InputManager::getInstance()->registerKeyDown(event->key());
 	if (event->key() == Qt::Key_Delete) {
 		SceneManager::getInstance()->removeSelected();
+	}
+	if (event->key() >= Qt::Key_0 && event->key() < Qt::Key_9)
+	{
+		RenderStateManager::RENDERSTATE = (RenderState)(event->key() - Qt::Key_0);
+		repaint();
+
 	}
 }
 

@@ -48,6 +48,8 @@ LightBuffer::LightBuffer(int nWidth, int nHeight)
 	}
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+
+	light = new DirectLight();
 }
 
 LightBuffer::~LightBuffer()
@@ -55,7 +57,7 @@ LightBuffer::~LightBuffer()
 	glDeleteFramebuffers(1,&m_nFrameBuffer);
 }
 
-void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlowTex, View *view)
+void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlowTex, View *view, Camera *camera)
 {
 	Profiler::getInstance()->startProfile("Draw Light");
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("DirectLight");
@@ -68,11 +70,8 @@ void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlow
 	glPushAttrib( GL_VIEWPORT_BIT );
 	glViewport( 0, 0, getWidth(), getHeight());
 
-	WorldState *worldState = (WorldState *) GameState::GAMESTATE;
-
 	MatrixManager::getInstance()->putMatrix4(MODELVIEW, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix4(PROJECTION, glm::mat4(1.0f));
-	Camera *camera = worldState->getPhysicsManager()->getWorldCameras()->getCurrentCamera();
 	camera->transform();
 	view->use3D(true);
 	glm::mat4 m4InvMVP = MatrixManager::getInstance()->getMatrix4(PROJECTION) * MatrixManager::getInstance()->getMatrix4(MODELVIEW);
@@ -86,7 +85,7 @@ void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlow
 	glBindAttribLocation(glslProgram->getHandle(), 0, "v_vertex");
 	glBindAttribLocation(glslProgram->getHandle(), 1, "v_texture");
 
-	worldState->getWorldManager()->getSun()->sendToShader("DirectLight");
+	light->sendToShader("DirectLight");
 
 	glslProgram->sendUniform("projectionMatrix", &MatrixManager::getInstance()->getMatrix4(PROJECTION)[0][0]);
 	glslProgram->sendUniform("inverseMVPMatrix", &m4InvMVP[0][0]);
@@ -104,7 +103,7 @@ void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlow
 	glslProgram->sendUniform("depthTex",1);
 	glslProgram->sendUniform("glowTex",2);
 
-	worldState->getShadowMapManager()->getSunShadow()->sendToShader("DirectLight");
+	//worldState->getShadowMapManager()->getSunShadow()->sendToShader("DirectLight");
 
 	drawScreenShader(0,0,1.0f,1.0f);
 	glslProgram->disable();

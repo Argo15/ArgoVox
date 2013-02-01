@@ -33,9 +33,9 @@ ActorWidget::ActorWidget()
 	tableWidget->setVerticalHeaderItem(3,scaleHdr);
 	tableWidget->setSpan(0,0,1,3);
 	tableWidget->setSpan(1,0,1,3);
-	tableWidget->setColumnWidth(0,60);
-	tableWidget->setColumnWidth(1,60);
-	tableWidget->setColumnWidth(2,60);
+	tableWidget->setColumnWidth(0,110);
+	tableWidget->setColumnWidth(1,110);
+	tableWidget->setColumnWidth(2,110);
 	tableWidget->resizeRowsToContents();
 	tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -69,7 +69,7 @@ ActorWidget::ActorWidget()
 
 	layout()->setContentsMargins(0,0,0,0);
 	setFixedHeight(sizeHint().height());
-	setFixedWidth(250);
+	setFixedWidth(400);
 }
 
 ActorWidget *ActorWidget::getInstance() {

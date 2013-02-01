@@ -81,11 +81,11 @@ void WorldRenderer::forwardRender()
 
 void WorldRenderer::defferedRender()
 {
-	m_gBuffer->drawToBuffer(m_view);
+	//m_gBuffer->drawToBuffer(m_view, m_camera);
 	m_atmosphereBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_gBuffer->getGlowTex(), m_gBuffer->getDepthTex(), m_view);
-	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_atmosphereBuffer->getGlowTex(), m_view);
+	//m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_atmosphereBuffer->getGlowTex(), m_view);
 	m_finalBuffer->drawToBuffer(m_atmosphereBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_view);
-	m_motionBlurBuffer->drawToBuffer(m_finalBuffer->getFinalTex(), m_gBuffer->getMotionTex(), 15, m_view);
+	//m_motionBlurBuffer->drawToBuffer(m_finalBuffer->getFinalTex(), m_gBuffer->getMotionTex(), 15, m_view);
 
 	glDisable(GL_LIGHTING);
 	glActiveTextureARB(GL_TEXTURE2);
@@ -109,7 +109,7 @@ void WorldRenderer::defferedRender()
 	}
 	if (RenderStateManager::RENDERSTATE == POSITION)
 	{
-		m_gBuffer->bindPositionTex();
+		//m_gBuffer->bindPositionTex();
 	}
 	if (RenderStateManager::RENDERSTATE == NORMALMAP)	
 	{
@@ -129,8 +129,9 @@ void WorldRenderer::defferedRender()
 	}
 	if (RenderStateManager::RENDERSTATE == MOTION)	
 	{
-		m_gBuffer->bindMotionTex();
+		//m_gBuffer->bindMotionTex();
 	}
+	glColor3f(1.0f,1.0f,1.0f);
 	drawScreen(0.0,0.0,1.0,1.0);
 }
 

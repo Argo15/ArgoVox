@@ -10,12 +10,12 @@ FileWidget::FileWidget()
 	newSceneBtn = new QPushButton("New Scene");
 
 	chunkCmb = new QComboBox();
-	addChunkToSceneBtn = new QPushButton("Add Chunk");
+	addChunkToSceneBtn = new QPushButton("Add Scene");
 
 	tileCmb = new QComboBox();
 	addTileToSceneBtn = new QPushButton("Add Tile");
 
-	saveAsChunkBtn = new QPushButton("Save as Chunk");
+	saveAsChunkBtn = new QPushButton("Save as Scene");
 	saveAsTileBtn = new QPushButton("Save as Tile");
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -26,15 +26,10 @@ FileWidget::FileWidget()
 	chunkLayout->addWidget(chunkCmb);
 	chunkLayout->addWidget(addChunkToSceneBtn);
 
-	tileLayout->addWidget(tileCmb);
-	tileLayout->addWidget(addTileToSceneBtn);
-
 	saveLayout->addWidget(saveAsChunkBtn);
-	saveLayout->addWidget(saveAsTileBtn);
 
 	mainLayout->addWidget(newSceneBtn);
 	mainLayout->addLayout(chunkLayout);
-	mainLayout->addLayout(tileLayout);
 	mainLayout->addLayout(saveLayout);
 	mainLayout->setContentsMargins(0,0,0,0);
 
@@ -47,7 +42,7 @@ FileWidget::FileWidget()
 	connect(saveAsTileBtn, SIGNAL(clicked()),this, SLOT(saveTile()));
 
 	setFixedHeight(sizeHint().height());
-	setFixedWidth(250);
+	setFixedWidth(400);
 }
 
 FileWidget *FileWidget::getInstance() {

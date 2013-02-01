@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Frustum.h"
 #include "View.h"
+#include "Grid.h"
 using namespace std;
 
 class GBuffer 
@@ -20,20 +21,16 @@ private:
 	GLuint m_nDepthTex;
 	GLuint m_nNormalTex;
 	GLuint m_nColorTex;
-	GLuint m_nWorldPosTex;
 	GLuint m_nGlowTex;
-	GLuint m_nMotionTex;
 	GLuint m_nFrameBuffer;
 
 	int m_nWidth, m_nHeight;
-	Camera m_lastCamera;
-	glm::mat4 m_m4LastCameraProj;
 
 public:
 	GBuffer(int nWidth, int nHeight);
 	~GBuffer();
 
-	void drawToBuffer(View *view);
+	void drawToBuffer(View *view, Camera *camera, Grid *myGrid);
 
 	void bind();
 	void unbind();
@@ -41,16 +38,12 @@ public:
 	void bindDepthTex();
 	void bindNormalTex();
 	void bindColorTex();
-	void bindPositionTex();
 	void bindGlowTex();
-	void bindMotionTex();
 
 	GLuint getGlowTex();
 	GLuint getDepthTex();
 	GLuint getColorTex();
 	GLuint getNormalTex();
-	GLuint getWorldPosTex();
-	GLuint getMotionTex();
 
 	int getWidth();
 	int getHeight();

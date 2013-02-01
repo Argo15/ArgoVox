@@ -1,3 +1,3 @@
 #include "RenderState.h"
 
-RenderState RenderStateManager::RENDERSTATE = FINAL;
+RenderState RenderStateManager::RENDERSTATE = FORWARD;
