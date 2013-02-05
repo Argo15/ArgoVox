@@ -127,7 +127,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/NODEFAULTLIB:library"
-				AdditionalDependencies="libboost_date_time-vc100-mt-gd-1_49.lib qtmaind.lib QtCored4.lib QtGuid4.lib QtOpenGLd4.lib opengl32.lib glu32.lib"
+				AdditionalDependencies="glew32.lib libboost_date_time-vc100-mt-gd-1_49.lib qtmaind.lib QtCored4.lib QtGuid4.lib QtOpenGLd4.lib opengl32.lib glu32.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="$(QTDIR)\lib"
 				IgnoreAllDefaultLibraries="false"
@@ -850,7 +850,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="Graphics"
+			Name="LiNex"
 			>
 			<File
 				RelativePath=".\Actor.cpp"
@@ -1425,6 +1425,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\f_exampleImageLoad.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_GBuffer.glsl"
 				>
 			</File>
@@ -1446,6 +1450,18 @@
 			</File>
 			<File
 				RelativePath=".\Data\Shaders\v_material.glsl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Voxels"
+			>
+			<File
+				RelativePath=".\VoxelGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\VoxelGrid.h"
 				>
 			</File>
 		</Filter>

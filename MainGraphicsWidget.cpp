@@ -52,12 +52,14 @@ void MainGraphicsWidget::initializeGL() {
 
 	FileWidget::getInstance()->refresh();
 
-	myGrid = new Grid(10, 10);
+	myGrid = new Grid(16, 16);
 	myGrid->setColor(1.0, 1.0 ,1.0);
 
 	m_gBuffer = new GBuffer(1280,720);
 	m_lightBuffer = new LightBuffer(1280,720);
 	m_finalBuffer = new FinalBuffer(1280,720);
+
+	voxels = new VoxelGrid(16);
 }
 
 void MainGraphicsWidget::resizeGL(int width, int height) {
@@ -118,7 +120,7 @@ void MainGraphicsWidget::forwardRender()
 	
 void MainGraphicsWidget::deferredRender()
 {
-	m_gBuffer->drawToBuffer(view, camera, myGrid);
+	m_gBuffer->drawToBuffer(view, camera, myGrid, voxels);
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
 	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), view);
 

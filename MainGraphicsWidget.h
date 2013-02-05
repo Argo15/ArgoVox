@@ -9,6 +9,7 @@
 #include "Grid.h"
 #include "GBuffer.h"
 #include "LightBuffer.h"
+#include "VoxelGrid.h"
 
 class MainGraphicsWidget : public QGLWidget
 {
@@ -20,6 +21,7 @@ private:
 	Camera *camera;
 	TileManager *tileManager;
 	Grid *myGrid;
+	VoxelGrid *voxels;
 	
 	GBuffer *m_gBuffer;
 	LightBuffer *m_lightBuffer;

@@ -13,6 +13,7 @@
 #include "Frustum.h"
 #include "View.h"
 #include "Grid.h"
+#include "VoxelGrid.h"
 using namespace std;
 
 class GBuffer 
@@ -30,7 +31,7 @@ public:
 	GBuffer(int nWidth, int nHeight);
 	~GBuffer();
 
-	void drawToBuffer(View *view, Camera *camera, Grid *myGrid);
+	void drawToBuffer(View *view, Camera *camera, Grid *myGrid, VoxelGrid *voxelGrid);
 
 	void bind();
 	void unbind();
