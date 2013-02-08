@@ -32,7 +32,7 @@ void main() {
 		worldPos = vec4(center+unitPosition*distFromCenter,1.0);
 	}
 	
-	gl_Position = projectionMatrix * modelviewMatrix * vec4(v_vertex,1.0);;
+	gl_Position = projectionMatrix * modelviewMatrix * vec4(v_vertex,1.0);
 	texCoord = vec2(textureMatrix * vec4(v_texture,0.0,0.0));
 	normal = normalMatrix * normalize(v_normal);
 	tangent = normalMatrix * normalize(v_tangent);

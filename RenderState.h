@@ -11,7 +11,8 @@ enum RenderState
 	LIGHTING, 
 	SSAO, 
 	SPECULAR,
-	MOTION
+	MOTION,
+	VOXEL
 };
 
 class RenderStateManager

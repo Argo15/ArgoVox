@@ -21,7 +21,6 @@ private:
 	Camera *camera;
 	TileManager *tileManager;
 	Grid *myGrid;
-	VoxelGrid *voxels;
 	
 	GBuffer *m_gBuffer;
 	LightBuffer *m_lightBuffer;
@@ -29,6 +28,7 @@ private:
 
 	void forwardRender();
 	void deferredRender();
+	void voxelRender();
 
 
 protected:

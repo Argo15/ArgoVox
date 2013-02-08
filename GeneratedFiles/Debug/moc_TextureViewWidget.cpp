@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'TextureViewWidget.h'
 **
-** Created: Mon Feb 4 02:34:11 2013
+** Created: Thu Feb 7 14:31:47 2013
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!

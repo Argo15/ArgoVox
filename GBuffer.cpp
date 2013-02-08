@@ -80,7 +80,7 @@ GBuffer::~GBuffer()
 	glDeleteFramebuffers(1,&m_nFrameBuffer);
 }
 
-void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid, VoxelGrid *voxelGrid)
+void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid)
 {
 	Profiler::getInstance()->startProfile("Draw GBuffer");
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("GBuffer");
@@ -108,23 +108,21 @@ void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid, VoxelGrid *
 	glBindAttribLocation(glslProgram->getHandle(), 4, "v_bitangent");
 
 	MatrixManager::getInstance()->putMatrix4(MODELVIEW, camera->transformToMatrix(MatrixManager::getInstance()->getMatrix4(MODELVIEW)));
-	glm::mat4 m4InvCamera = MatrixManager::getInstance()->getMatrix4(MODELVIEW);
-	m4InvCamera = glm::inverse(m4InvCamera);
 	glslProgram->sendUniform("projectionMatrix", &MatrixManager::getInstance()->getMatrix4(PROJECTION)[0][0]);
 	glslProgram->sendUniform("modelviewMatrix", &MatrixManager::getInstance()->getMatrix4(MODELVIEW)[0][0]);
-	glslProgram->sendUniform("invCameraMatrix", &m4InvCamera[0][0]);
-
-	voxelGrid->bind(3);
 
 	MaterialManager::getInstance()->getMaterial("Default")->sendToShader("GBuffer");
 	myGrid->draw();
 
+
 	SceneManager::getInstance()->draw("GBuffer");
+
 	glslProgram->disable();
 
 	MaterialManager::getInstance()->getMaterial("Default")->sendToShader("GBuffer");
 	SceneManager::getInstance()->drawTransformers();
 
+	//glPopAttrib();
 	unbind();
 	Profiler::getInstance()->endProfile();
 }

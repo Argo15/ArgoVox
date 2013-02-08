@@ -1,0 +1,22 @@
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Textures
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Textures
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Models
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Models
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Materials
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Materials
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Shaders
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Shaders
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Tiles
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Chunks
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Chunks
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Loading Tiles
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: gBuffer Done
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Light Buffer Done
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+23:44:22 2/4/2013 [GRAPHICS] [INFO]: Final Buffer Done
+23:44:22 2/4/2013 [GRAPHICS] [ERROR]: projectionMatrix - is not a valid uniform variable name

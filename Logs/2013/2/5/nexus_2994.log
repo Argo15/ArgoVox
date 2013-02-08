@@ -1,0 +1,27 @@
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Textures
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Textures
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Models
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Models
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Materials
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Materials
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Shaders
+0:49:54 2/5/2013 [GRAPHICS] [ERROR]: Vertex shader failed to compile: GBuffer
+0(5) : warning C7022: unrecognized profile specifier "Off"
+0(5) : warning C7022: unrecognized profile specifier "ZWrite"
+0(5) : error C0502: syntax error at token "ZWrite"
+
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Shaders
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Tiles
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Chunks
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Chunks
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Loading Tiles
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: gBuffer Done
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Light Buffer Done
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+0:49:54 2/5/2013 [GRAPHICS] [INFO]: Final Buffer Done
+0:49:54 2/5/2013 [GRAPHICS] [ERROR]: projectionMatrix - is not a valid uniform variable name

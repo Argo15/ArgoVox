@@ -62,7 +62,7 @@ void Material::sendToShader(string sShader)
 	glslProgram->sendUniform("normalmap", 1);
 	glslProgram->sendUniform("material.normalenabled", m_bNormalEnabled);
 	glslProgram->sendUniform("material.color", m_nColor[0],m_nColor[1],m_nColor[2]);
-	if (sShader == "GBuffer" || sShader == "Basic")
+	if (sShader == "GBuffer" || sShader == "Basic" || sShader == "BuildVoxels")
 	{
 		glslProgram->sendUniform("material.emission", m_nEmission[0],m_nEmission[1],m_nEmission[2]);
 		glslProgram->sendUniform("material.specular", m_nSpecular);

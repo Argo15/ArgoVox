@@ -13,7 +13,7 @@ void Actor::drawActor(string sShader)
 {
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader(sShader);
 	glslProgram->sendUniform("modelviewMatrix", &MatrixManager::getInstance()->getMatrix4(MODELVIEW)[0][0]);
-	if (sShader == "Basic" || sShader == "GBuffer") 
+	if (sShader == "Basic" || sShader == "GBuffer" || sShader == "BuildVoxels") 
 	{
 		glslProgram->sendUniform("normalMatrix", &MatrixManager::getInstance()->getMatrix3(NORMAL)[0][0],false,3);
 		MaterialManager::getInstance()->getMaterial(*m_psMaterial)->sendToShader(sShader);
