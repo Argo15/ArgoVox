@@ -41,10 +41,9 @@ void main() {
 		normalcolor = vec3(0.5,0.5,1.0);
 	normalcolor = normalcolor*2.0-vec3(1.0);
 	vec3 _normal = normalize(tangmat*normalcolor);
-	vec3 viewVector = normalize(vec3(worldPos.xyz/worldPos.w)-cameraPos);
-	vec3 lightDir = normalize(light.direction);
 	vec4 texcolor = texture2D(tex,texCoord);
 	
+	vec3 lightDir = normalize(light.direction);
 	vec3 look = normalize(worldPos.xyz-cameraPos);
 	vec3 reflectedLight = reflect(lightDir,_normal);
 	reflectedLight = normalize(reflectedLight);

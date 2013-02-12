@@ -39,8 +39,11 @@ void DirectLight::sendToShader(string sShader)
 	glslProgram->sendUniform("light.color", m_nColor[0],m_nColor[1],m_nColor[2]);
 	glslProgram->sendUniform("light.ambient", m_nAmbient);
 	glslProgram->sendUniform("light.diffuse", m_nDiffuse);
-	glslProgram->sendUniform("light.specular", m_nSpecular);
-	glslProgram->sendUniform("lightenabled", true);
+	if (sShader != "BuildVoxels")
+	{
+		glslProgram->sendUniform("light.specular", m_nSpecular);
+		glslProgram->sendUniform("lightenabled", true);
+	}
 }
 
 Vector3 DirectLight::getDirection()

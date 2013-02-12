@@ -3,8 +3,9 @@
 
 #include "View.h"
 #include "Camera.h"
+#include "DirectLight.h"
 
-#define VOXEL_SIZE 128
+#define VOXEL_SIZE 64
 #define WORLD_SIZE 16
 
 class VoxelGrid
@@ -20,7 +21,8 @@ public:
     static VoxelGrid *getInstance();
 
 	void clear();
-	void buildVoxels(View *view, Camera *camera);
+	void buildVoxels(DirectLight *light);
+	void buildVoxels(View *view, Camera *camera, DirectLight *light);
 	void bind(GLuint unit);
 	GLuint getTextureId();
 };

@@ -17,7 +17,7 @@ out vec3 bitangent;
 out vec2 texCoord;
 
 void main() {
-	worldPos = vec3(invCameraMatrix * modelviewMatrix * vec4(v_vertex,1.0)) - vec3(0.01);
+	worldPos = vec3(invCameraMatrix * modelviewMatrix * vec4(v_vertex,1.0));
 	gl_Position = projectionMatrix * modelviewMatrix * vec4(v_vertex,1.0);
 	texCoord = vec2(textureMatrix * vec4(v_texture,0.0,0.0));
 	normal = normalMatrix * normalize(v_normal);

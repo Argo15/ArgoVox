@@ -45,6 +45,8 @@ public:
 	GLuint getGlowTex();
 	int getWidth();
 	int getHeight();
+	DirectLight *getLight();
+
 };
 
 #endif

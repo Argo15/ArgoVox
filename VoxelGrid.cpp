@@ -37,22 +37,39 @@ void VoxelGrid::clear()
 	glActiveTextureARB(GL_TEXTURE0);
 }
 
-void VoxelGrid::buildVoxels(View *view, Camera *camera)
+void VoxelGrid::buildVoxels(DirectLight *light)
+{
+	clear();
+
+	View *view = new View();
+	view->viewport(0, 0, VOXEL_SIZE, VOXEL_SIZE);
+	view->set2D(-WORLD_SIZE/2.0, WORLD_SIZE/2.0, -WORLD_SIZE/2.0, WORLD_SIZE/2.0, 0, WORLD_SIZE);
+	Camera *camera = new Camera();
+	camera->setPosition(0,0,WORLD_SIZE/2.0);
+	camera->setLookAt(0,0,0);
+	camera->setUp(0,1.0f,0);
+	buildVoxels(view, camera, light);
+	camera->setPosition(0,WORLD_SIZE/2.0,0);
+	camera->setLookAt(0,0,0);
+	camera->setUp(0,0,1.0f);
+	buildVoxels(view, camera, light);
+	camera->setPosition(WORLD_SIZE/2.0,0,0);
+	camera->setLookAt(0,0,0);
+	camera->setUp(0,1.0f,0);
+	buildVoxels(view, camera, light);
+}
+
+void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	MatrixManager::getInstance()->putMatrix4(MODELVIEW, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix4(PROJECTION, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix3(NORMAL, glm::mat3(1.0f));
 	glPushAttrib( GL_VIEWPORT_BIT );
-	glViewport( 0, 0, 8*VOXEL_SIZE, 8*VOXEL_SIZE);
+	view->viewport();
 
-	Camera newCamera;
-	newCamera.setPosition(WORLD_SIZE,WORLD_SIZE,WORLD_SIZE);
-	newCamera.setLookAt(0,0,0);
-	newCamera.setUp(0,1.0f,0);
-
-	view->use3D(true);
-	newCamera.transform();
+	view->use3D(false);
+	camera->transform();
 
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("BuildVoxels");
 	glslProgram->use();
@@ -67,9 +84,13 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera)
 	glslProgram->sendUniform("projectionMatrix", &MatrixManager::getInstance()->getMatrix4(PROJECTION)[0][0]);
 	glslProgram->sendUniform("modelviewMatrix", &MatrixManager::getInstance()->getMatrix4(MODELVIEW)[0][0]);
 	glm::mat4 cameraInverse = glm::mat4(1.0);
-	cameraInverse = newCamera.transformToMatrix(cameraInverse);
+	cameraInverse = camera->transformToMatrix(cameraInverse);
 	cameraInverse = glm::inverse(cameraInverse);
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
+	glslProgram->sendUniform("voxelGridSize", WORLD_SIZE);
+	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
+
+	light->sendToShader("BuildVoxels");
 
 	this->bind(3);
 

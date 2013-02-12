@@ -119,12 +119,12 @@ void MainGraphicsWidget::forwardRender()
 
 void MainGraphicsWidget::voxelRender()
 {
-	VoxelGrid::getInstance()->clear();
-	VoxelGrid::getInstance()->buildVoxels(view, camera);
+	VoxelGrid::getInstance()->buildVoxels(m_lightBuffer->getLight());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	MatrixManager::getInstance()->putMatrix4(MODELVIEW, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix4(PROJECTION, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix3(NORMAL, glm::mat3(1.0f));
+	view->viewport();
 	view->use3D(true);
 
 	camera->transform();
@@ -141,18 +141,19 @@ void MainGraphicsWidget::voxelRender()
 	cameraInverse = camera->transformToMatrix(cameraInverse);
 	cameraInverse = glm::inverse(cameraInverse);
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
+	glslProgram->sendUniform("voxelGridSize", WORLD_SIZE);
+	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
 
 	VoxelGrid::getInstance()->bind(3);
 	glPointSize(10.0f);
 	glEnable(GL_POINT_SMOOTH);
 	glBegin(GL_POINTS);
-	int numVoxels = VOXEL_SIZE;
-	float increase = 32.0f / (float)numVoxels;
-	for (float x=-7.1; x<8; x+=increase)
+	float voxelWidth = (float)WORLD_SIZE / (float)VOXEL_SIZE;
+	for (float x=-(WORLD_SIZE/2.0)+(voxelWidth/2.0); x<(WORLD_SIZE/2.0); x+=voxelWidth)
 	{
-		for (float y=-7.1; y<8; y+=increase)
+		for (float y=-(WORLD_SIZE/2.0)+(voxelWidth/2.0); y<(WORLD_SIZE/2.0); y+=voxelWidth)
 		{
-			for (float z=-7.1; z<8; z+=increase)
+			for (float z=-(WORLD_SIZE/2.0)+(voxelWidth/2.0); z<(WORLD_SIZE/2.0); z+=voxelWidth)
 			{
 				glVertex3f(x,y,z);
 			}
@@ -165,8 +166,7 @@ void MainGraphicsWidget::voxelRender()
 	
 void MainGraphicsWidget::deferredRender()
 {
-	VoxelGrid::getInstance()->clear();
-	VoxelGrid::getInstance()->buildVoxels(view, camera);
+	VoxelGrid::getInstance()->buildVoxels(m_lightBuffer->getLight());
 
 	m_gBuffer->drawToBuffer(view, camera, myGrid);
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);

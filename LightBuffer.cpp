@@ -153,3 +153,8 @@ int LightBuffer::getHeight()
 {
 	return m_nHeight;
 }
+
+DirectLight *LightBuffer::getLight()
+{
+	return light;
+}
