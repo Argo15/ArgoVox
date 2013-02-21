@@ -1,0 +1,27 @@
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Textures
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Textures
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Models
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Models
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Materials
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Materials
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Shaders
+19:5:4 2/14/2013 [GRAPHICS] [ERROR]: Fragment shader failed to compile BuildVoxels
+0(36) : error C0000: syntax error, unexpected identifier, expecting "::" at token "voxelmap"
+0(91) : error C1102: incompatible type for parameter #1 ("imgUI")
+
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Shaders
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Tiles
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Chunks
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Chunks
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Loading Tiles
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: gBuffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Light Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Final Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+19:5:4 2/14/2013 [GRAPHICS] [ERROR]: projectionMatrix - is not a valid uniform variable name

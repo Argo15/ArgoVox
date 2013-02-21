@@ -25,7 +25,6 @@ GBuffer::GBuffer(int nWidth, int nHeight)
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, m_nWidth, m_nHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0 );
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_nDepthTex, 0);
 
 	// Generate normal
@@ -36,7 +35,6 @@ GBuffer::GBuffer(int nWidth, int nHeight)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, m_nWidth, m_nHeight, 0, GL_RGBA, GL_FLOAT, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_nNormalTex, 0);
 
 	// Generate color
@@ -47,10 +45,9 @@ GBuffer::GBuffer(int nWidth, int nHeight)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_nWidth, m_nHeight, 0, GL_RGBA, GL_FLOAT, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_nColorTex, 0);
 
-	// Glow texture
+	// Generate glow
 	glGenTextures(1, &m_nGlowTex);
 	glBindTexture(GL_TEXTURE_2D, m_nGlowTex);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -58,8 +55,28 @@ GBuffer::GBuffer(int nWidth, int nHeight)
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_nWidth, m_nHeight, 0, GL_RGBA, GL_FLOAT, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_nGlowTex, 0);
+
+	// Generate tangent
+	glGenTextures(1, &m_nTangentTex);
+	glBindTexture(GL_TEXTURE_2D, m_nTangentTex);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, m_nWidth, m_nHeight, 0, GL_RGBA, GL_FLOAT, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_nTangentTex, 0);
+
+	// Generate bitangent
+	glGenTextures(1, &m_nBitangentTex);
+	glBindTexture(GL_TEXTURE_2D, m_nBitangentTex);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, m_nWidth, m_nHeight, 0, GL_RGBA, GL_FLOAT, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, m_nBitangentTex, 0);
 
 	// check FbO status
 	GLenum FBOstatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -87,8 +104,8 @@ void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid)
 	glslProgram->use();
 
 	bind();
-	GLenum mrt[] = {GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT};
-	glDrawBuffers(3, mrt);
+	GLenum mrt[] = {GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT, GL_COLOR_ATTACHMENT2_EXT, GL_COLOR_ATTACHMENT3_EXT, GL_COLOR_ATTACHMENT4_EXT};
+	glDrawBuffers(5, mrt);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushAttrib( GL_VIEWPORT_BIT );
 	glViewport( 0, 0, getWidth(), getHeight());
@@ -100,7 +117,9 @@ void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid)
 
 	glBindFragDataLocation(glslProgram->getHandle(), 0, "normalBuffer");
 	glBindFragDataLocation(glslProgram->getHandle(), 1, "colorBuffer");
-	glBindFragDataLocation(glslProgram->getHandle(), 3, "glowBuffer");
+	glBindFragDataLocation(glslProgram->getHandle(), 2, "glowBuffer");
+	glBindFragDataLocation(glslProgram->getHandle(), 3, "tangentBuffer");
+	glBindFragDataLocation(glslProgram->getHandle(), 4, "bitangentBuffer");
 	glBindAttribLocation(glslProgram->getHandle(), 0, "v_vertex");
 	glBindAttribLocation(glslProgram->getHandle(), 1, "v_texture");
 	glBindAttribLocation(glslProgram->getHandle(), 2, "v_normal");
@@ -145,6 +164,16 @@ void GBuffer::bindDepthTex()
 void GBuffer::bindNormalTex() 
 {
 	glBindTexture(GL_TEXTURE_2D, m_nNormalTex);
+}
+
+void GBuffer::bindTangentTex() 
+{
+	glBindTexture(GL_TEXTURE_2D, m_nTangentTex);
+}
+
+void GBuffer::bindBitangentTex() 
+{
+	glBindTexture(GL_TEXTURE_2D, m_nBitangentTex);
 }
 
 void GBuffer::bindColorTex() 

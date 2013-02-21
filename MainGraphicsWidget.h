@@ -10,6 +10,7 @@
 #include "GBuffer.h"
 #include "LightBuffer.h"
 #include "VoxelGrid.h"
+#include "GlossyBuffer.h"
 
 class MainGraphicsWidget : public QGLWidget
 {
@@ -24,6 +25,7 @@ private:
 	
 	GBuffer *m_gBuffer;
 	LightBuffer *m_lightBuffer;
+	GlossyBuffer *m_glossyBuffer;
 	FinalBuffer *m_finalBuffer;
 
 	void forwardRender();

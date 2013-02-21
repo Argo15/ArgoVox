@@ -17,29 +17,42 @@ VoxelGrid::VoxelGrid()
 	glewInit();
 	glActiveTexture(GL_TEXTURE8);
 	glEnable(GL_TEXTURE_3D);
-	glGenTextures(1, &m_nTextureId);
-	glBindTexture(GL_TEXTURE_3D, m_nTextureId);
+	glGenTextures(6, m_nTextureId);
 	m_defaultValues = new GLuint[VOXEL_SIZE*VOXEL_SIZE*VOXEL_SIZE];
 	for (int i=0; i<VOXEL_SIZE*VOXEL_SIZE*VOXEL_SIZE; i++)
 	{
 		m_defaultValues[i] = 0;
 	}
-	glTexImage3DEXT(GL_TEXTURE_3D, 0, GL_R32UI, VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, m_defaultValues);
+	for (int i=0; i<4; i++)
+	{
+		glBindTexture(GL_TEXTURE_3D, m_nTextureId[i]);
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_R32UI, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RED_INTEGER, GL_UNSIGNED_INT, m_defaultValues);
+	}
+
 	glActiveTextureARB(GL_TEXTURE0);
+
+	m_voxelShadowMap = new VoxelShadowMap(512);
+	m_nCurrentMipLevel = 0;
 }
 
 void VoxelGrid::clear()
 {
 	glActiveTexture(GL_TEXTURE8);
 	glEnable(GL_TEXTURE_3D);
-	glBindTexture(GL_TEXTURE_3D, m_nTextureId);
-	glTexImage3DEXT(GL_TEXTURE_3D, 0, GL_R32UI, VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, m_defaultValues);
+	for (int i=0; i<4; i++)
+	{
+		glBindTexture(GL_TEXTURE_3D, m_nTextureId[i]);
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_R32UI, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RED_INTEGER, GL_UNSIGNED_INT, m_defaultValues);	
+	}
+	glGenerateMipmap(GL_TEXTURE_3D);
 	glActiveTextureARB(GL_TEXTURE0);
 }
 
 void VoxelGrid::buildVoxels(DirectLight *light)
 {
 	clear();
+
+	m_voxelShadowMap->buildShadowMap(light);
 
 	View *view = new View();
 	view->viewport(0, 0, VOXEL_SIZE, VOXEL_SIZE);
@@ -92,7 +105,14 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 
 	light->sendToShader("BuildVoxels");
 
-	this->bind(3);
+	m_voxelShadowMap->sendToShader("BuildVoxels");
+
+	this->bind(0, 0);
+	this->bind(1, 1);
+	this->bind(2, 2);
+	this->bind(3, 3);
+	//this->bind(4, 4);
+	//this->bind(5, 5);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
@@ -106,12 +126,22 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 	glEnable(GL_DEPTH_TEST);
 }
 
-void VoxelGrid::bind(GLuint unit)
+void VoxelGrid::bind(GLuint unit, GLuint mipLevel)
 {
-	glBindImageTexture(unit, m_nTextureId, 0, GL_TRUE, 0, GL_READ_WRITE, GL_R32UI);
+	glBindImageTexture(unit, m_nTextureId[mipLevel], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R32UI);
 }
 	
-GLuint VoxelGrid::getTextureId()
+GLuint VoxelGrid::getTextureId(int mipmap)
 {
-	return m_nTextureId;
+	return m_nTextureId[mipmap];
+}
+
+void VoxelGrid::setMipLevel(int nLevel)
+{
+	m_nCurrentMipLevel = nLevel;
+}
+	
+int VoxelGrid::getMipLevel()
+{
+	return m_nCurrentMipLevel;
 }

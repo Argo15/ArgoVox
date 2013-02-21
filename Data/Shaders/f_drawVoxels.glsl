@@ -3,6 +3,7 @@
 uniform layout ( binding = 3, r32ui ) coherent volatile uimage3D voxelmap;
 uniform int voxelGridSize;
 uniform int numVoxels;
+uniform int mipLevel;
 in vec4 worldPos;
 out vec4 fragColor;
 
@@ -14,7 +15,7 @@ void main() {
 	uint xPos = uint(((worldPos.x+voxelGridSize/2)/voxelGridSize)*(numVoxels));
 	uint yPos = uint(((worldPos.y+voxelGridSize/2)/voxelGridSize)*(numVoxels));
 	uint zPos = uint(((worldPos.z+voxelGridSize/2)/voxelGridSize)*(numVoxels));
-	ivec3 voxelPos = ivec3(xPos, yPos, zPos);
+	ivec3 voxelPos = ivec3(xPos/pow(2, mipLevel), yPos/pow(2, mipLevel), zPos/pow(2, mipLevel));
 	uvec4 voxelValues = imageLoad(voxelmap,voxelPos);
 	vec4 voxelColor = convRGBA8ToVec4(voxelValues.r);
 	

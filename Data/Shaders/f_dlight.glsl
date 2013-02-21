@@ -71,11 +71,11 @@ void main() {
 			if ( mapNum < 0.5 )
 				shadow += textureProj(shadowMap[0], shadowCoord + vec4(xOff, yOff, -0.001, 0.0));
 			else if(mapNum<1.5)
-				shadow += textureProj(shadowMap[1], shadowCoord + vec4(xOff, yOff, -0.0015, 0.0));
+				shadow += textureProj(shadowMap[1], shadowCoord + vec4(xOff, yOff, -0.002, 0.0));
 			else if(mapNum<2.5)
-				shadow += textureProj(shadowMap[2], shadowCoord + vec4(xOff, yOff, -0.002, 0.0));
+				shadow += textureProj(shadowMap[2], shadowCoord + vec4(xOff, yOff, -0.003, 0.0));
 			else
-				shadow += textureProj(shadowMap[3], shadowCoord + vec4(xOff, yOff, -0.003, 0.0));
+				shadow += textureProj(shadowMap[3], shadowCoord + vec4(xOff, yOff, -0.004, 0.0));
 		}
 	}
 	shadow /= sfilter*sfilter;

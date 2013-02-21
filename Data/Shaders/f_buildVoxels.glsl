@@ -19,9 +19,16 @@ struct DirectLight
 
 uniform sampler2D tex;
 uniform sampler2D normalmap;
-uniform layout ( binding = 3, r32ui ) coherent volatile uimage3D voxelmap;
+uniform layout ( binding = 0, r32ui ) coherent volatile uimage3D voxelmap0;
+uniform layout ( binding = 1, r32ui ) coherent volatile uimage3D voxelmap1;
+uniform layout ( binding = 2, r32ui ) coherent volatile uimage3D voxelmap2;
+uniform layout ( binding = 3, r32ui ) coherent volatile uimage3D voxelmap3;
+//uniform layout ( binding = 4, r32ui ) coherent volatile uimage3D voxelmap4;
+//uniform layout ( binding = 5, r32ui ) coherent volatile uimage3D voxelmap5;
 uniform Material material;
 uniform DirectLight light;
+uniform sampler2DShadow shadowMap;
+uniform mat4 lightMatrix;
 uniform int voxelGridSize;
 uniform int numVoxels;
 in vec3 worldPos;
@@ -69,8 +76,11 @@ void main() {
 	vec3 _normal = normalize(tangmat*normalcolor);
 	vec4 texcolor = texture2D(tex,texCoord);
 	
+	vec4 shadowCoord = lightMatrix * vec4(worldPos, 1.0);
+	float shadow = textureProj(shadowMap, shadowCoord + vec4(0, 0, -0.002, 0.0));
+	
 	vec3 lightDir = normalize(light.direction);
-	vec4 lightcolor = clamp(vec4(light.color,1.0) * (light.ambient+light.diffuse*clamp(dot(_normal,-lightDir),0.0,1.0)),0.0,1.0);
+	vec4 lightcolor = clamp(vec4(light.color,1.0) * (light.ambient + shadow * light.diffuse*clamp(dot(_normal,-lightDir),0.0,1.0)),0.0,1.0);
 
 	uint xPos = uint(((worldPos.x+voxelGridSize/2)/voxelGridSize)*(numVoxels));
 	uint yPos = uint(((worldPos.y+voxelGridSize/2)/voxelGridSize)*(numVoxels));
@@ -81,7 +91,12 @@ void main() {
 	fragmentColor += vec4(material.emission,1.0);
 	fragmentColor = clamp(fragmentColor, vec4(0.0), vec4(1.0));
 	
-	imageAtomicRGBA8Avg(voxelmap,voxelPos,fragmentColor);
+	imageAtomicRGBA8Avg(voxelmap0,voxelPos/ivec3(1),fragmentColor);
+	imageAtomicRGBA8Avg(voxelmap1,voxelPos/ivec3(2),fragmentColor);
+	imageAtomicRGBA8Avg(voxelmap2,voxelPos/ivec3(4),fragmentColor);
+	imageAtomicRGBA8Avg(voxelmap3,voxelPos/ivec3(8),fragmentColor);
+	//imageAtomicRGBA8Avg(voxelmap4,voxelPos/ivec3(16),fragmentColor);
+	//imageAtomicRGBA8Avg(voxelmap5,voxelPos/ivec3(32),fragmentColor);
 	
 	fragColor = vec4(material.shininess)+vec4(material.specular)+fragmentColor+vec4(_normal, 1.0)+vec4(1.0);
 } 

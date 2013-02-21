@@ -57,6 +57,7 @@ void MainGraphicsWidget::initializeGL() {
 
 	m_gBuffer = new GBuffer(1280,720);
 	m_lightBuffer = new LightBuffer(1280,720);
+	m_glossyBuffer = new GlossyBuffer(1280, 720);
 	m_finalBuffer = new FinalBuffer(1280,720);
 }
 
@@ -143,12 +144,14 @@ void MainGraphicsWidget::voxelRender()
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
 	glslProgram->sendUniform("voxelGridSize", WORLD_SIZE);
 	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
+	glslProgram->sendUniform("mipLevel", VoxelGrid::getInstance()->getMipLevel());
 
-	VoxelGrid::getInstance()->bind(3);
-	glPointSize(10.0f);
-	glEnable(GL_POINT_SMOOTH);
+	int mipFactor = pow(2.0, VoxelGrid::getInstance()->getMipLevel());
+	VoxelGrid::getInstance()->bind(3, VoxelGrid::getInstance()->getMipLevel());
+	//glEnable(GL_POINT_SMOOTH);
+	glPointSize(10.0f*mipFactor);
+	float voxelWidth = (float)WORLD_SIZE / (float)VOXEL_SIZE * mipFactor;
 	glBegin(GL_POINTS);
-	float voxelWidth = (float)WORLD_SIZE / (float)VOXEL_SIZE;
 	for (float x=-(WORLD_SIZE/2.0)+(voxelWidth/2.0); x<(WORLD_SIZE/2.0); x+=voxelWidth)
 	{
 		for (float y=-(WORLD_SIZE/2.0)+(voxelWidth/2.0); y<(WORLD_SIZE/2.0); y+=voxelWidth)
@@ -169,10 +172,13 @@ void MainGraphicsWidget::deferredRender()
 	VoxelGrid::getInstance()->buildVoxels(m_lightBuffer->getLight());
 
 	m_gBuffer->drawToBuffer(view, camera, myGrid);
+	m_glossyBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
-	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), view);
+	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_glossyBuffer->getGlossyTex(), view);
 
 	glDisable(GL_LIGHTING);
+	glActiveTextureARB(GL_TEXTURE3);
+	glDisable(GL_TEXTURE_2D);
 	glActiveTextureARB(GL_TEXTURE2);
 	glDisable(GL_TEXTURE_2D);
 	glActiveTextureARB(GL_TEXTURE1);
@@ -192,13 +198,17 @@ void MainGraphicsWidget::deferredRender()
 	{
 		m_finalBuffer->bindFinalTex();
 	}
-	if (RenderStateManager::RENDERSTATE == POSITION)
-	{
-		m_gBuffer->bindDepthTex();
-	}
 	if (RenderStateManager::RENDERSTATE == NORMALMAP)	
 	{
 		m_gBuffer->bindNormalTex();
+	}
+	if (RenderStateManager::RENDERSTATE == TANGENT)	
+	{
+		m_gBuffer->bindTangentTex();
+	}
+	if (RenderStateManager::RENDERSTATE == REFLECTION)	
+	{
+		m_glossyBuffer->bindGlossyTex();
 	}
 	if (RenderStateManager::RENDERSTATE == COLOR)	
 	{

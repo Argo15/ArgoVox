@@ -323,6 +323,18 @@
 						/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Release\moc_VoxelWidget.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 			<Filter
 				Name="Debug"
@@ -463,6 +475,18 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_TextureWidget.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_VoxelWidget.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
@@ -830,6 +854,40 @@
 								Name="VCCustomBuildTool"
 								Description="Moc&apos;ing $(InputFileName)..."
 								CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB  &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-IC:\bullet-2.79\src&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I.&quot; &quot;.\ActorWidget.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+								AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+								Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Moc&apos;ing $(InputFileName)..."
+								CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-IC:\bullet-2.79\src&quot; &quot;-IC:\Users\Bill\Desktop\CPP\MyProjects\LivingNexus\LivingNexus&quot; -DQT_CORE_LIB -DQT_GUI_LIB -DQT_LARGEFILE_SUPPORT -DQT_OPENGL_LIB -DUNICODE -DWIN32&#x0D;&#x0A;"
+								AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+								Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+				<Filter
+					Name="VoxelWidget"
+					>
+					<File
+						RelativePath=".\VoxelWidget.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\VoxelWidget.h"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+								Description="Moc&apos;ing $(InputFileName)..."
+								CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-IC:\bullet-2.79\src&quot; -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_OPENGL_LIB -DUNICODE -DWIN32&#x0D;&#x0A;"
 								AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 								Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 							/>
@@ -1437,7 +1495,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\f_final.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_GBuffer.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\f_glossy.glsl"
 				>
 			</File>
 			<File
@@ -1457,7 +1523,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\v_final.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\v_GBuffer.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\v_glossy.glsl"
 				>
 			</File>
 			<File
@@ -1473,11 +1547,27 @@
 			Name="Voxels"
 			>
 			<File
+				RelativePath=".\GlossyBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GlossyBuffer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\VoxelGrid.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\VoxelGrid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VoxelShadowMap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\VoxelShadowMap.h"
 				>
 			</File>
 		</Filter>

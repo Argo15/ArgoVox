@@ -22,6 +22,8 @@ private:
 	GLuint m_nNormalTex;
 	GLuint m_nColorTex;
 	GLuint m_nGlowTex;
+	GLuint m_nTangentTex;
+	GLuint m_nBitangentTex;
 	GLuint m_nFrameBuffer;
 
 	int m_nWidth, m_nHeight;
@@ -37,6 +39,8 @@ public:
 
 	void bindDepthTex();
 	void bindNormalTex();
+	void bindTangentTex();
+	void bindBitangentTex();
 	void bindColorTex();
 	void bindGlowTex();
 

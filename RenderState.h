@@ -5,13 +5,13 @@ enum RenderState
 {
 	FORWARD, 
 	FINAL, 
-	COLOR, 
-	POSITION, 
+	COLOR,  
 	NORMALMAP, 
+	TANGENT,
 	LIGHTING, 
-	SSAO, 
 	SPECULAR,
-	MOTION,
+	REFLECTION,
+	SSAO, 
 	VOXEL
 };
 

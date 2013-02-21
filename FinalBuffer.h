@@ -27,7 +27,7 @@ public:
 	FinalBuffer(int nWidth, int nHeight);
 	~FinalBuffer();
 
-	void drawToBuffer(GLuint colorTex, GLuint lightTex, GLuint glowTex, View *view);
+	void drawToBuffer(GLuint colorTex, GLuint lightTex, GLuint glowTex, GLuint reflectionTex, View *view);
 
 	void bind();
 	void unbind();

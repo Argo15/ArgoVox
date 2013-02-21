@@ -6,6 +6,7 @@
 #include "ActorWidget.h"
 #include "DisplayWidget.h"
 #include "PhysicsWidget.h"
+#include "VoxelWidget.h"
 
 DockedWidget::DockedWidget(QGLWidget *glWidget) 
 	: QDockWidget(0)
@@ -27,6 +28,7 @@ DockedWidget::DockedWidget(QGLWidget *glWidget)
 	mainLayout->addLayout(modelTextureLayout);
 	mainLayout->addWidget(MaterialWidget::getInstance(glWidget));
 	mainLayout->addLayout(actorDisplayLayout);
+	mainLayout->addWidget(VoxelWidget::getInstance());
 	mainLayout->setContentsMargins(0,0,0,0);
 
 	mainWidget->setLayout(mainLayout);
