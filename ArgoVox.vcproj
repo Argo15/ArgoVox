@@ -1507,6 +1507,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\f_indirect.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_material.glsl"
 				>
 			</File>
@@ -1535,6 +1539,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\v_indirect.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\v_light.glsl"
 				>
 			</File>
@@ -1552,6 +1560,14 @@
 			</File>
 			<File
 				RelativePath=".\GlossyBuffer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IndirectBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\IndirectBuffer.h"
 				>
 			</File>
 			<File

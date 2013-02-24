@@ -115,6 +115,7 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 	//this->bind(5, 5);
 
 	glDisable(GL_DEPTH_TEST);
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -124,6 +125,7 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 	glPopAttrib( );
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
 void VoxelGrid::bind(GLuint unit, GLuint mipLevel)

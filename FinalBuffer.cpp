@@ -47,7 +47,7 @@ FinalBuffer::~FinalBuffer()
 }
 
 
-void FinalBuffer::drawToBuffer(GLuint nColorTex, GLuint nLightTex, GLuint nGlowTex, GLuint reflectionTex, View *view)
+void FinalBuffer::drawToBuffer(GLuint nColorTex, GLuint nLightTex, GLuint nGlowTex, GLuint indirectTex, GLuint reflectionTex, View *view)
 {
 	Profiler::getInstance()->startProfile("Draw Final");
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader("Final");
@@ -78,11 +78,14 @@ void FinalBuffer::drawToBuffer(GLuint nColorTex, GLuint nLightTex, GLuint nGlowT
 	glActiveTexture(GL_TEXTURE2); 
 	glBindTexture(GL_TEXTURE_2D, nGlowTex);
 	glActiveTexture(GL_TEXTURE3); 
+	glBindTexture(GL_TEXTURE_2D, indirectTex);
+	glActiveTexture(GL_TEXTURE4); 
 	glBindTexture(GL_TEXTURE_2D, reflectionTex);
 	glslProgram->sendUniform("colorTex",0);
 	glslProgram->sendUniform("lightTex",1);
 	glslProgram->sendUniform("glowTex",2);
-	glslProgram->sendUniform("reflectionTex",3);
+	glslProgram->sendUniform("indirectTex",3);
+	glslProgram->sendUniform("reflectionTex",4);
 
 	drawScreenShader(0,0,1.0f,1.0f);
 	glslProgram->disable();

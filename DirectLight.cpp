@@ -8,8 +8,8 @@ DirectLight::DirectLight()
 	m_nColor[0]=1.0f;
 	m_nColor[1]=1.0f;
 	m_nColor[2]=1.0f;
-	m_nAmbient=0.5f;
-	m_nDiffuse=0.5f;
+	m_nAmbient=0.0f;
+	m_nDiffuse=1.0f;
 	m_nSpecular=1.0f;
 	m_nDirection[0]=0;
 	m_nDirection[1]=-1.0f;

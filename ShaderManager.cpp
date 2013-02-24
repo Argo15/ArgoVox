@@ -44,6 +44,7 @@ void ShaderManager::initialize()
 	loadShader("Voxel", "Data/Shaders/v_drawVoxels.glsl","Data/Shaders/f_drawVoxels.glsl");
 	loadShader("BuildVoxels", "Data/Shaders/v_buildVoxels.glsl","Data/Shaders/f_buildVoxels.glsl");
 	loadShader("GlossyReflection", "Data/Shaders/v_glossy.glsl","Data/Shaders/f_glossy.glsl");
+	loadShader("Indirect", "Data/Shaders/v_indirect.glsl","Data/Shaders/f_indirect.glsl");
 	/*loadShader("MotionBlur", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_motionBlur.glsl");
 	loadShader("Atmosphere", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_atmosphere.glsl");*/
 	Logging::GRAPHICS->info("Done Loading Shaders");

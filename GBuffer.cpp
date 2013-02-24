@@ -196,6 +196,16 @@ GLuint GBuffer::getDepthTex()
 	return m_nDepthTex;
 }
 
+GLuint GBuffer::getTangentTex()
+{
+	return m_nTangentTex;
+}
+
+GLuint GBuffer::getBitangentTex()
+{
+	return m_nBitangentTex;
+}
+
 GLuint GBuffer::getColorTex() 
 {
 	return m_nColorTex;

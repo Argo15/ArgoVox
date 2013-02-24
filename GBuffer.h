@@ -46,6 +46,8 @@ public:
 
 	GLuint getGlowTex();
 	GLuint getDepthTex();
+	GLuint getTangentTex();
+	GLuint getBitangentTex();
 	GLuint getColorTex();
 	GLuint getNormalTex();
 

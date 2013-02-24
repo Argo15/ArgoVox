@@ -58,6 +58,7 @@ void MainGraphicsWidget::initializeGL() {
 	m_gBuffer = new GBuffer(1280,720);
 	m_lightBuffer = new LightBuffer(1280,720);
 	m_glossyBuffer = new GlossyBuffer(1280, 720);
+	m_indirectBuffer = new IndirectBuffer(1280, 720);
 	m_finalBuffer = new FinalBuffer(1280,720);
 }
 
@@ -173,10 +174,13 @@ void MainGraphicsWidget::deferredRender()
 
 	m_gBuffer->drawToBuffer(view, camera, myGrid);
 	m_glossyBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
+	m_indirectBuffer->drawToBuffer(m_gBuffer->getDepthTex(), m_gBuffer->getTangentTex(), m_gBuffer->getBitangentTex(), m_gBuffer->getNormalTex(), m_gBuffer->getColorTex(), view, camera);
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
-	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_glossyBuffer->getGlossyTex(), view);
+	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_indirectBuffer->getIndirectTex(), m_glossyBuffer->getGlossyTex(), view);
 
 	glDisable(GL_LIGHTING);
+	glActiveTextureARB(GL_TEXTURE4);
+	glDisable(GL_TEXTURE_2D);
 	glActiveTextureARB(GL_TEXTURE3);
 	glDisable(GL_TEXTURE_2D);
 	glActiveTextureARB(GL_TEXTURE2);
@@ -202,9 +206,9 @@ void MainGraphicsWidget::deferredRender()
 	{
 		m_gBuffer->bindNormalTex();
 	}
-	if (RenderStateManager::RENDERSTATE == TANGENT)	
+	if (RenderStateManager::RENDERSTATE == INDIRECT)	
 	{
-		m_gBuffer->bindTangentTex();
+		m_indirectBuffer->bindIndirectTex();
 	}
 	if (RenderStateManager::RENDERSTATE == REFLECTION)	
 	{
@@ -307,4 +311,3 @@ void MainGraphicsWidget::mouseMoveEvent(QMouseEvent *event) {
 void MainGraphicsWidget::wheelEvent(QWheelEvent *event) {
 
 }
-	
