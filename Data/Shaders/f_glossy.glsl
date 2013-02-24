@@ -1,9 +1,6 @@
 #version 420
 
-uniform layout ( binding = 0, r32ui ) coherent volatile uimage3D voxelmap0;
-uniform layout ( binding = 1, r32ui ) coherent volatile uimage3D voxelmap1;
-uniform layout ( binding = 2, r32ui ) coherent volatile uimage3D voxelmap2;
-uniform layout ( binding = 3, r32ui ) coherent volatile uimage3D voxelmap3;
+uniform sampler3D voxelmap[4];
 uniform int worldSize;
 uniform int numVoxels;
 uniform mat4 inverseMVPMatrix;
@@ -21,24 +18,11 @@ float voxelWidth[4] = float[](
 	8.0 * float(worldSize) / float(numVoxels)
 );
 
-vec4 convRGBA8ToVec4(uint val) {
-	return vec4 (float((val&0x000000FF)), float((val&0x0000FF00)>>8U), float((val&0x00FF0000)>>16U), float((val&0xFF000000)>>24U));
-}
-
-vec4 sampleVoxelsAtWorldPos(layout ( r32ui ) coherent volatile uimage3D imgUI, vec3 worldPos, int mipFactor){
-	uint xPos = uint(((worldPos.x+worldSize/2)/worldSize)*(numVoxels));
-	uint yPos = uint(((worldPos.y+worldSize/2)/worldSize)*(numVoxels));
-	uint zPos = uint(((worldPos.z+worldSize/2)/worldSize)*(numVoxels));
-	ivec3 voxelPos = ivec3(xPos/mipFactor, yPos/mipFactor, zPos/mipFactor);
-	uvec4 voxelValues = imageLoad(imgUI,voxelPos);
-	return convRGBA8ToVec4(voxelValues.r);
-}
-
 vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 {
 	int curMipmap = 0;
 	vec4 voxelColor = vec4(0.0);
-	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += voxelWidth[curMipmap])
+	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += voxelWidth[curMipmap]/2)
 	{
 		float sliceRadius = i * tan(coneAngle);
 		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
@@ -47,16 +31,10 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 		vec3 reflection = direction * i;
 		if (dot(reflection, normal) > voxelWidth[curMipmap])
 		{
-			if (curMipmap == 0) {
-				voxelColor = sampleVoxelsAtWorldPos(voxelmap0, startPos.xyz + reflection, 1);
-			} else if (curMipmap == 1) {
-				voxelColor = sampleVoxelsAtWorldPos(voxelmap1, startPos.xyz + reflection, 2);
-			} else if (curMipmap == 2) {
-				voxelColor = sampleVoxelsAtWorldPos(voxelmap2, startPos.xyz + reflection, 4);
-			} else if (curMipmap == 3) {
-				voxelColor = sampleVoxelsAtWorldPos(voxelmap3, startPos.xyz + reflection, 8);
-			}
-			if (length(voxelColor) > 0.01)
+			vec4 sampleColor = texture(voxelmap[curMipmap],((startPos+reflection+vec3(worldSize/2))/worldSize));
+			float contribution = (1.0-voxelColor.a);
+			voxelColor += sampleColor*contribution;
+			if (voxelColor.a >= 0.99)
 			{
 				i = worldSize;
 			}
@@ -76,7 +54,7 @@ void main() {
 	{
 		discard;
 	}
-	float coneAngle = (1.15 - texture2D(normalTex,texCoord).a) * 3.14/8;
+	float coneAngle = (1.0 - texture2D(normalTex,texCoord).a) * 3.14/16;
 	
 	float hyperDepth = texture2D(depthTex,texCoord).r;
 	vec4 screenPos = vec4(texCoord.s*2.0-1.0, texCoord.t*2.0-1.0, hyperDepth*2.0-1.0, 1.0);
@@ -90,5 +68,5 @@ void main() {
 
 	vec4 voxelColor = voxelConeTrace(worldPos.xyz, reflectedEye, normal, coneAngle);
 	
-	glossyBuffer = vec4(specular * voxelColor.rgb / vec3(255.0),1.0);
+	glossyBuffer = vec4(specular * voxelColor.rgb,1.0);
 }

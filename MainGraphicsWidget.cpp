@@ -143,12 +143,17 @@ void MainGraphicsWidget::voxelRender()
 	cameraInverse = camera->transformToMatrix(cameraInverse);
 	cameraInverse = glm::inverse(cameraInverse);
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
-	glslProgram->sendUniform("voxelGridSize", WORLD_SIZE);
-	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
-	glslProgram->sendUniform("mipLevel", VoxelGrid::getInstance()->getMipLevel());
+	glslProgram->sendUniform("worldSize", WORLD_SIZE);
+	//glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
+	//glslProgram->sendUniform("mipLevel", VoxelGrid::getInstance()->getMipLevel());
 
 	int mipFactor = pow(2.0, VoxelGrid::getInstance()->getMipLevel());
-	VoxelGrid::getInstance()->bind(3, VoxelGrid::getInstance()->getMipLevel());
+	
+	glActiveTexture(GL_TEXTURE8);
+	glEnable(GL_TEXTURE_3D);
+	VoxelGrid::getInstance()->bind(VoxelGrid::getInstance()->getMipLevel());
+	glslProgram->sendUniform("voxelmap", 8);
+
 	//glEnable(GL_POINT_SMOOTH);
 	glPointSize(10.0f*mipFactor);
 	float voxelWidth = (float)WORLD_SIZE / (float)VOXEL_SIZE * mipFactor;

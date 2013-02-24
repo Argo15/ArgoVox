@@ -17,16 +17,21 @@ VoxelGrid::VoxelGrid()
 	glewInit();
 	glActiveTexture(GL_TEXTURE8);
 	glEnable(GL_TEXTURE_3D);
-	glGenTextures(6, m_nTextureId);
-	m_defaultValues = new GLuint[VOXEL_SIZE*VOXEL_SIZE*VOXEL_SIZE];
-	for (int i=0; i<VOXEL_SIZE*VOXEL_SIZE*VOXEL_SIZE; i++)
+	glGenTextures(4, m_nTextureId);
+	m_defaultValues = new char[VOXEL_SIZE*VOXEL_SIZE*VOXEL_SIZE*4];
+	for (int i=0; i<VOXEL_SIZE*VOXEL_SIZE*VOXEL_SIZE*4; i++)
 	{
-		m_defaultValues[i] = 0;
+		m_defaultValues[i] = (char)0.0f;
 	}
 	for (int i=0; i<4; i++)
 	{
 		glBindTexture(GL_TEXTURE_3D, m_nTextureId[i]);
-		glTexImage3D(GL_TEXTURE_3D, 0, GL_R32UI, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RED_INTEGER, GL_UNSIGNED_INT, m_defaultValues);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_defaultValues);
 	}
 
 	glActiveTextureARB(GL_TEXTURE0);
@@ -42,7 +47,7 @@ void VoxelGrid::clear()
 	for (int i=0; i<4; i++)
 	{
 		glBindTexture(GL_TEXTURE_3D, m_nTextureId[i]);
-		glTexImage3D(GL_TEXTURE_3D, 0, GL_R32UI, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RED_INTEGER, GL_UNSIGNED_INT, m_defaultValues);	
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_defaultValues);
 	}
 	glGenerateMipmap(GL_TEXTURE_3D);
 	glActiveTextureARB(GL_TEXTURE0);
@@ -128,9 +133,14 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 }
 
+void VoxelGrid::bind(GLuint mipLevel)
+{
+	glBindTexture(GL_TEXTURE_3D, m_nTextureId[mipLevel]);
+}
+
 void VoxelGrid::bind(GLuint unit, GLuint mipLevel)
 {
-	glBindImageTexture(unit, m_nTextureId[mipLevel], 0, GL_TRUE, 0, GL_READ_WRITE, GL_R32UI);
+	glBindImageTexture(unit, m_nTextureId[mipLevel], 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_RGBA8);
 }
 	
 GLuint VoxelGrid::getTextureId(int mipmap)

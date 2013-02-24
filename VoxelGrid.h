@@ -17,8 +17,8 @@ private:
 
 	VoxelShadowMap *m_voxelShadowMap;
 
-	GLuint m_nTextureId[6];
-	GLuint *m_defaultValues;
+	GLuint m_nTextureId[4];
+	char *m_defaultValues;
 
 	int m_nCurrentMipLevel;
 
@@ -28,6 +28,7 @@ public:
 	void clear();
 	void buildVoxels(DirectLight *light);
 	void buildVoxels(View *view, Camera *camera, DirectLight *light);
+	void bind(GLuint mipLevel);
 	void bind(GLuint unit, GLuint mipLevel);
 	GLuint getTextureId(int mipmap);
 	void setMipLevel(int nLevel);

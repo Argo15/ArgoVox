@@ -1,0 +1,25 @@
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Textures
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Textures
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Models
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Models
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Materials
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Materials
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Shaders
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Shaders
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Tiles
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Chunks
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Chunks
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Loading Tiles
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: gBuffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Light Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Glossy Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Indirect Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Final Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+21:38:39 2/23/2013 [GRAPHICS] [ERROR]: numVoxels - is not a valid uniform variable name

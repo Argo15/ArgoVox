@@ -74,10 +74,23 @@ void IndirectBuffer::drawToBuffer(GLuint nDepthTex, GLuint nTangentTex, GLuint n
 
 	glslProgram->sendUniform("worldSize", WORLD_SIZE);
 	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
-	VoxelGrid::getInstance()->bind(0, 0);
-	VoxelGrid::getInstance()->bind(1, 1);
-	VoxelGrid::getInstance()->bind(2, 2);
-	VoxelGrid::getInstance()->bind(3, 3);
+
+	glActiveTexture(GL_TEXTURE8);
+	glEnable(GL_TEXTURE_3D);
+	VoxelGrid::getInstance()->bind(0);
+	glActiveTexture(GL_TEXTURE9);
+	glEnable(GL_TEXTURE_3D);
+	VoxelGrid::getInstance()->bind(1);
+	glActiveTexture(GL_TEXTURE10);
+	glEnable(GL_TEXTURE_3D);
+	VoxelGrid::getInstance()->bind(2);
+	glActiveTexture(GL_TEXTURE11);
+	glEnable(GL_TEXTURE_3D);
+	VoxelGrid::getInstance()->bind(3);
+	glslProgram->sendUniform("voxelmap[0]", 8);
+	glslProgram->sendUniform("voxelmap[1]", 9);
+	glslProgram->sendUniform("voxelmap[2]", 10);
+	glslProgram->sendUniform("voxelmap[3]", 11);
 
 	glActiveTexture(GL_TEXTURE0); 
 	glBindTexture(GL_TEXTURE_2D, nDepthTex);
