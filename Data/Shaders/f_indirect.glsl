@@ -27,21 +27,24 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += voxelWidth[curMipmap])
 	{
 		float sliceRadius = i * tan(coneAngle);
-		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
-			curMipmap++;
-		}
+		
 		vec3 reflection = direction * i;
 		if (dot(reflection, normal) > voxelWidth[curMipmap])
 		{
-			vec4 sampleColor = texelFetch(voxelmap[curMipmap],ivec3(((startPos+reflection+vec3(worldSize/2))/worldSize)*numVoxels/pow(2.0, curMipmap)), 0);
-			float contribution = (1.0-voxelColor.a);
+			vec4 sampleColor = texture(voxelmap[curMipmap],(startPos+reflection+vec3(worldSize/2))/worldSize);
+			float contribution = min(1.0, (1.0-voxelColor.a)/sampleColor.a);
 			voxelColor += sampleColor*contribution;
 			if (voxelColor.a >= 0.99)
 			{
 				i = worldSize;
 			}
 		}
+		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
+			curMipmap++;
+		}
 	}
+	if (voxelColor.a > 0)
+		voxelColor.rgb /= voxelColor.a;
 	return voxelColor;
 }
 
@@ -108,7 +111,7 @@ void main() {
 		voxelColor += voxelConeTrace(worldPos.xyz, coneDir, normal, coneAngle) * contribution;
 	}
 	
-	voxelColor *= 0.97;
+	voxelColor *= 0.90;
 	
 	vec4 diffuse = texture2D(diffuseTex,texCoord);
 	
