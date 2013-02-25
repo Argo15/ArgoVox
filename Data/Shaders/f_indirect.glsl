@@ -32,7 +32,7 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 		if (dot(reflection, normal) > voxelWidth[curMipmap])
 		{
 			vec4 sampleColor = texture(voxelmap[curMipmap],(startPos+reflection+vec3(worldSize/2))/worldSize);
-			float contribution = min(1.0, (1.0-voxelColor.a)/sampleColor.a);
+			float contribution = 1.0-voxelColor.a;
 			voxelColor += sampleColor*contribution;
 			if (voxelColor.a >= 0.99)
 			{

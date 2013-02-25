@@ -40,6 +40,8 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 			curMipmap++;
 		}
 	}
+	if (voxelColor.a > 0)
+		voxelColor.rgb /= voxelColor.a;
 	return voxelColor;
 }
 
