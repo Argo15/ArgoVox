@@ -1475,6 +1475,10 @@
 			Name="Resouces"
 			>
 			<File
+				RelativePath=".\Data\Shaders\f_buildMipmap.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_buildVoxels.glsl"
 				>
 			</File>
@@ -1512,6 +1516,10 @@
 			</File>
 			<File
 				RelativePath=".\Data\Shaders\f_material.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\v_buildMipmap.glsl"
 				>
 			</File>
 			<File
