@@ -59,6 +59,7 @@ void MainGraphicsWidget::initializeGL() {
 	m_lightBuffer = new LightBuffer(1280,720);
 	m_glossyBuffer = new GlossyBuffer(1280, 720);
 	m_indirectBuffer = new IndirectBuffer(1280, 720);
+	m_blurBuffer = new BlurBuffer(1280, 720);
 	m_finalBuffer = new FinalBuffer(1280,720);
 }
 
@@ -180,8 +181,10 @@ void MainGraphicsWidget::deferredRender()
 	m_gBuffer->drawToBuffer(view, camera, myGrid);
 	m_glossyBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
 	m_indirectBuffer->drawToBuffer(m_gBuffer->getDepthTex(), m_gBuffer->getTangentTex(), m_gBuffer->getBitangentTex(), m_gBuffer->getNormalTex(), m_gBuffer->getColorTex(), view, camera);
+	m_blurBuffer->drawToBuffer(m_indirectBuffer->getIndirectTex(), view);
+	m_blurBuffer->drawToBuffer(m_blurBuffer->getBlurTex(), view);
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
-	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_indirectBuffer->getIndirectTex(), m_glossyBuffer->getGlossyTex(), view);
+	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_blurBuffer->getBlurTex(), m_glossyBuffer->getGlossyTex(), view);
 
 	glDisable(GL_LIGHTING);
 	glActiveTextureARB(GL_TEXTURE4);
@@ -213,7 +216,7 @@ void MainGraphicsWidget::deferredRender()
 	}
 	if (RenderStateManager::RENDERSTATE == INDIRECT)	
 	{
-		m_indirectBuffer->bindIndirectTex();
+		m_blurBuffer->bindBlurTex();
 	}
 	if (RenderStateManager::RENDERSTATE == REFLECTION)	
 	{

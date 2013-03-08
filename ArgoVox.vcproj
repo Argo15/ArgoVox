@@ -1511,11 +1511,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\f_HBlur.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\f_indirect.glsl"
 				>
 			</File>
 			<File
 				RelativePath=".\Data\Shaders\f_material.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\f_VBlur.glsl"
+				>
+			</File>
+			<File
+				RelativePath=".\Data\Shaders\v_blur.glsl"
 				>
 			</File>
 			<File
@@ -1562,6 +1574,14 @@
 		<Filter
 			Name="Voxels"
 			>
+			<File
+				RelativePath=".\BlurBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlurBuffer.h"
+				>
+			</File>
 			<File
 				RelativePath=".\GlossyBuffer.cpp"
 				>

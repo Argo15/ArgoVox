@@ -46,6 +46,8 @@ void ShaderManager::initialize()
 	loadShader("GlossyReflection", "Data/Shaders/v_glossy.glsl","Data/Shaders/f_glossy.glsl");
 	loadShader("Indirect", "Data/Shaders/v_indirect.glsl","Data/Shaders/f_indirect.glsl");
 	loadShader("BuildMipmap", "Data/Shaders/v_buildMipmap.glsl","Data/Shaders/f_buildMipmap.glsl");
+	loadShader("HorizontalBlur", "Data/Shaders/v_blur.glsl","Data/Shaders/f_HBlur.glsl");
+	loadShader("VerticalBlur", "Data/Shaders/v_blur.glsl","Data/Shaders/f_VBlur.glsl");
 	/*loadShader("MotionBlur", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_motionBlur.glsl");
 	loadShader("Atmosphere", "Data/Shaders/v_motionBlur.glsl","Data/Shaders/f_atmosphere.glsl");*/
 	Logging::GRAPHICS->info("Done Loading Shaders");

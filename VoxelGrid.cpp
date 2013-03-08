@@ -118,11 +118,6 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 	m_voxelShadowMap->sendToShader("BuildVoxels");
 
 	this->bind(0, 0);
-	//this->bind(1, 1);
-	//this->bind(2, 2);
-	//this->bind(3, 3);
-	//this->bind(4, 4);
-	//this->bind(5, 5);
 
 	glDisable(GL_DEPTH_TEST);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);

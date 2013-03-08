@@ -20,9 +20,6 @@ struct DirectLight
 uniform sampler2D tex;
 uniform sampler2D normalmap;
 layout ( binding = 0, rgba8 ) uniform image3D voxelmap0;
-layout ( binding = 1, rgba8 ) uniform image3D voxelmap1;
-layout ( binding = 2, rgba8 ) uniform image3D voxelmap2;
-layout ( binding = 3, rgba8 ) uniform image3D voxelmap3;
 uniform Material material;
 uniform DirectLight light;
 uniform sampler2DShadow shadowMap;
@@ -66,9 +63,6 @@ void main() {
 	fragmentColor = clamp(fragmentColor, vec4(0.0), vec4(1.0));
 	
 	imageStore(voxelmap0,voxelPos/ivec3(1),vec4(fragmentColor.rgb, 1.0));
-	imageStore(voxelmap1,voxelPos/ivec3(2),vec4(fragmentColor.rgb, 1.0));
-	imageStore(voxelmap2,voxelPos/ivec3(4),vec4(fragmentColor.rgb, 1.0));
-	imageStore(voxelmap3,voxelPos/ivec3(8),vec4(fragmentColor.rgb, 1.0));
-	
+
 	fragColor = vec4(material.shininess)+vec4(material.specular)+fragmentColor+vec4(_normal, 1.0)+vec4(1.0);
 } 

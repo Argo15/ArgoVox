@@ -13,6 +13,7 @@
 #include "GlossyBuffer.h"
 #include "IndirectBuffer.h"
 #include "ColorBuffer.h"
+#include "BlurBuffer.h"
 
 class MainGraphicsWidget : public QGLWidget
 {
@@ -29,6 +30,7 @@ private:
 	LightBuffer *m_lightBuffer;
 	GlossyBuffer *m_glossyBuffer;
 	IndirectBuffer *m_indirectBuffer;
+	BlurBuffer *m_blurBuffer;
 	FinalBuffer *m_finalBuffer;
 
 	void forwardRender();
