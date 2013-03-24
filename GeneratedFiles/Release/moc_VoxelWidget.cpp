@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'VoxelWidget.h'
 **
-** Created: Fri Feb 15 13:21:50 2013
+** Created: Sat Mar 16 10:17:18 2013
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!
