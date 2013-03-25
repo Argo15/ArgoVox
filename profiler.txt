@@ -1,0 +1,8 @@
+Draw Final avg: 1000
+Indirect Lighting avg: 30058
+Draw Light avg: 18123
+Draw GBuffer avg: 10736
+Reflection avg: 27317
+Builds Voxel Mipmap avg: 1000
+Builds Voxels avg: 36865
+Clear Voxels avg: 1573

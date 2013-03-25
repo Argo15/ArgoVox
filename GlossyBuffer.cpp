@@ -105,6 +105,7 @@ void GlossyBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlo
 	glslProgram->sendUniform("glowTex",2);
 
 	drawScreenShader(0,0,1.0f,1.0f);
+	glFinish();
 	glslProgram->disable();
 	unbind();	
 }

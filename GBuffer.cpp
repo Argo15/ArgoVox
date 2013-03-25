@@ -142,6 +142,7 @@ void GBuffer::drawToBuffer(View *view, Camera *camera, Grid *myGrid)
 	SceneManager::getInstance()->drawTransformers();
 
 	//glPopAttrib();
+	glFinish();
 	unbind();
 	Profiler::getInstance()->endProfile();
 }

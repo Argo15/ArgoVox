@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'MainGraphicsWidget.h'
 **
-** Created: Fri Mar 8 00:31:10 2013
+** Created: Sun Mar 24 20:31:42 2013
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!

@@ -10,6 +10,7 @@ class VoxelWidget : public QWidget
 private:
 	static VoxelWidget *m_pInstance;
 
+	QTableWidget *profileTbl;
 	QLabel *mipLbl, *giLbl;
 	QCheckBox *giChk;
 	QSlider *mipSld;

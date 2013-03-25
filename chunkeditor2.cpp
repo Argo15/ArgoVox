@@ -7,8 +7,11 @@
 #include "ModelWidget.h"
 #include "TextureWidget.h"
 #include "MaterialWidget.h"
+#include "VoxelWidget.h"
+#include "Profiler.h"
 
 bool postInit = true;
+int nCounter = 0;
 
 ChunkEditor2::ChunkEditor2(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
@@ -39,6 +42,13 @@ void ChunkEditor2::timerEvent(QTimerEvent *event)
 		postInit = false;
 	}
 	glWidget->repaint();
+	nCounter++;
+	if (nCounter == 100)
+	{
+		VoxelWidget::getInstance()->refresh();
+		Profiler::getInstance()->reset();
+		nCounter = 0;
+	}
 }
 
 void ChunkEditor2::closeEvent(QCloseEvent *event)

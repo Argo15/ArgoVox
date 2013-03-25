@@ -33,7 +33,7 @@ DockedWidget::DockedWidget(QGLWidget *glWidget)
 
 	mainWidget->setLayout(mainLayout);
 	mainWidget->setFixedHeight(mainWidget->sizeHint().height());
-	mainWidget->setFixedWidth(mainWidget->sizeHint().width());
+	mainWidget->setFixedWidth(450);
 
 	QScrollArea *scrollArea = new QScrollArea;
 	scrollArea->setWidget(mainWidget);

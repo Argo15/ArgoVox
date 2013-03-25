@@ -109,6 +109,7 @@ void LightBuffer::drawToBuffer(GLuint nNormalTex, GLuint nDepthTex, GLuint nGlow
 	shadowMap->sendToShader("DirectLight");
 
 	drawScreenShader(0,0,1.0f,1.0f);
+	glFinish();
 	glslProgram->disable();
 	unbind();	
 	Profiler::getInstance()->endProfile();

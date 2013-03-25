@@ -88,6 +88,7 @@ void FinalBuffer::drawToBuffer(GLuint nColorTex, GLuint nLightTex, GLuint nGlowT
 	glslProgram->sendUniform("reflectionTex",4);
 
 	drawScreenShader(0,0,1.0f,1.0f);
+	glFinish();
 	glslProgram->disable();
 	unbind();	
 	Profiler::getInstance()->endProfile();

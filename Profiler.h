@@ -23,6 +23,11 @@ public:
 	void startProfile(std::string sSection);
 	void endProfile();
 	void logProfile();
+
+	void reset();
+	int getAverage(std::string sSection);
+	int getMinimum(std::string sSection);
+	int getMaximum(std::string sSection);
 };
 
 #endif

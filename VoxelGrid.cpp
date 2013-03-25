@@ -3,6 +3,7 @@
 #include "ShaderManager.h"
 #include "SceneManager.h"
 #include "DrawFunc.h"
+#include "Profiler.h"
 
 VoxelGrid* VoxelGrid::m_pInstance = 0;
 
@@ -56,7 +57,10 @@ void VoxelGrid::clear()
 
 void VoxelGrid::buildVoxels(DirectLight *light)
 {
+	Profiler::getInstance()->startProfile("Clear Voxels");
 	clear();
+	glFinish();
+	Profiler::getInstance()->endProfile();
 
 	m_voxelShadowMap->buildShadowMap(light);
 
@@ -67,6 +71,7 @@ void VoxelGrid::buildVoxels(DirectLight *light)
 	camera->setPosition(0,0,WORLD_SIZE/2.0);
 	camera->setLookAt(0,0,0);
 	camera->setUp(0,1.0f,0);
+	Profiler::getInstance()->startProfile("Build Voxels");
 	buildVoxels(view, camera, light);
 	camera->setPosition(0,WORLD_SIZE/2.0,0);
 	camera->setLookAt(0,0,0);
@@ -76,10 +81,15 @@ void VoxelGrid::buildVoxels(DirectLight *light)
 	camera->setLookAt(0,0,0);
 	camera->setUp(0,1.0f,0);
 	buildVoxels(view, camera, light);
-
+	glFinish();
+	Profiler::getInstance()->endProfile();
+	
+	Profiler::getInstance()->startProfile("Build Voxel Mipmap");
 	buildMipmap(1);
 	buildMipmap(2);
 	buildMipmap(3);
+	glFinish();
+	Profiler::getInstance()->endProfile();
 }
 
 void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)

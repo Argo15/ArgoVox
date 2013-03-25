@@ -13,6 +13,7 @@
 #include "InputManager.h"
 #include "RenderState.h"
 #include "NoState.h"
+#include "Profiler.h"
 
 MainGraphicsWidget::MainGraphicsWidget(QGLFormat fmt, QWidget *parent)
     : QGLWidget(fmt,parent) 
@@ -179,10 +180,17 @@ void MainGraphicsWidget::deferredRender()
 	VoxelGrid::getInstance()->buildVoxels(m_lightBuffer->getLight());
 
 	m_gBuffer->drawToBuffer(view, camera, myGrid);
+
+	Profiler::getInstance()->startProfile("Reflection");
 	m_glossyBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
-	m_indirectBuffer->drawToBuffer(m_gBuffer->getDepthTex(), m_gBuffer->getTangentTex(), m_gBuffer->getBitangentTex(), m_gBuffer->getNormalTex(), m_gBuffer->getColorTex(), view, camera);
+	Profiler::getInstance()->endProfile();
+
+	Profiler::getInstance()->startProfile("Indirect Lighting");
+	m_indirectBuffer->drawToBuffer(m_gBuffer->getDepthTex(), m_gBuffer->getTangentTex(), m_gBuffer->getBitangentTex(), m_gBuffer->getNormalTex(), m_gBuffer->getColorTex(), view, camera);	
 	m_blurBuffer->drawToBuffer(m_indirectBuffer->getIndirectTex(), view);
 	m_blurBuffer->drawToBuffer(m_blurBuffer->getBlurTex(), view);
+	Profiler::getInstance()->endProfile();
+
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);
 	m_finalBuffer->drawToBuffer(m_gBuffer->getColorTex(), m_lightBuffer->getLightTex(), m_lightBuffer->getGlowTex(), m_blurBuffer->getBlurTex(), m_glossyBuffer->getGlossyTex(), view);
 
@@ -260,6 +268,10 @@ void MainGraphicsWidget::keyPressEvent (QKeyEvent *event) {
 	InputManager::getInstance()->registerKeyDown(event->key());
 	if (event->key() == Qt::Key_Delete) {
 		SceneManager::getInstance()->removeSelected();
+	}
+	if (event->key() == Qt::Key_P)
+	{
+		Profiler::getInstance()->logProfile();
 	}
 	if (event->key() >= Qt::Key_0 && event->key() <= Qt::Key_9)
 	{

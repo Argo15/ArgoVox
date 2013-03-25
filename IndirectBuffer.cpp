@@ -109,6 +109,7 @@ void IndirectBuffer::drawToBuffer(GLuint nDepthTex, GLuint nTangentTex, GLuint n
 	glslProgram->sendUniform("diffuseTex",4);
 
 	drawScreenShader(0,0,1.0f,1.0f);
+	glFinish();
 	glslProgram->disable();
 	unbind();	
 }

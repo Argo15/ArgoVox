@@ -2,6 +2,9 @@
 #include "TimeManager.h"
 #include "Logger.h"
 #include "StringUtils.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 Profiler* Profiler::m_pInstance = 0;
 typedef boost::unordered_map<std::string, int>::value_type int_value;
@@ -59,10 +62,35 @@ void Profiler::endProfile()
 
 void Profiler::logProfile() 
 {
+	ofstream myfile;
+	myfile.open ("profiler.txt");
 	BOOST_FOREACH(int_value section, m_hmSectionAverages) 
 	{
-		Logging::PROFILER->info(section.first + " avg: " + StringUtils::valueOf(m_hmSectionAverages[section.first]));
-		Logging::PROFILER->info(section.first + " min: " + StringUtils::valueOf(m_hmSectionMinimum[section.first]));
-		Logging::PROFILER->info(section.first + " max: " + StringUtils::valueOf(m_hmSectionMaximum[section.first]));
+		myfile << section.first + " avg: " + StringUtils::valueOf(m_hmSectionAverages[section.first]) << endl;
+		//Logging::PROFILER->info(section.first + " min: " + StringUtils::valueOf(m_hmSectionMinimum[section.first]));
+		//Logging::PROFILER->info(section.first + " max: " + StringUtils::valueOf(m_hmSectionMaximum[section.first]));
 	}
+}
+
+void Profiler::reset()
+{
+	m_hmSectionCounts.clear();
+	m_hmSectionAverages.clear();
+	m_hmSectionMinimum.clear();
+	m_hmSectionMaximum.clear();
+}
+	
+int Profiler::getAverage(std::string sSection)
+{
+	return m_hmSectionAverages[sSection];
+}
+	
+int Profiler::getMinimum(std::string sSection)
+{
+	return m_hmSectionMinimum[sSection];
+}
+	
+int Profiler::getMaximum(std::string sSection)
+{
+	return m_hmSectionMaximum[sSection];
 }
