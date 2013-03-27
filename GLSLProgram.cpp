@@ -20,7 +20,7 @@ using namespace std;
 // Public part :
 
 GLSLProgram::GLSLProgram()
-  :vertex_(NULL), fragment_(NULL)
+  :vertex_(NULL), fragment_(NULL), geometry_(NULL)
 {
   handle_ = glCreateProgram();
 }
@@ -37,7 +37,7 @@ GLSLProgram::GLSLProgram(const std::string &shader, unsigned int shaderType)
 }
 
 GLSLProgram::GLSLProgram(const std::string &vertexShader, const std::string &fragmentShader)
-  :vertex_(NULL), fragment_(NULL)
+  :vertex_(NULL), fragment_(NULL), geometry_(NULL)
 {
   handle_ = glCreateProgram();
   
@@ -50,6 +50,23 @@ GLSLProgram::GLSLProgram(const std::string &vertexShader, const std::string &fra
   link();
 }
 
+GLSLProgram::GLSLProgram(const std::string &vertexShader, const std::string &fragmentShader, const std::string &geometryShader)
+  :vertex_(NULL), fragment_(NULL), geometry_(NULL)
+{
+  handle_ = glCreateProgram();
+  
+  vertex_ = new GLSLShader(vertexShader, GL_VERTEX_SHADER_ARB);
+  fragment_ = new GLSLShader(fragmentShader, GL_FRAGMENT_SHADER_ARB);
+  geometry_ = new GLSLShader(geometryShader, GL_GEOMETRY_SHADER_ARB);
+  
+  attach(vertex_);
+  attach(fragment_);
+  attach(geometry_);
+
+  link();
+}
+
+
 GLSLProgram::~GLSLProgram()
 {
 	if(vertex_)
@@ -59,6 +76,10 @@ GLSLProgram::~GLSLProgram()
 	if(fragment_)
 	{
 		delete fragment_;
+	}
+	if(geometry_)
+	{
+		delete geometry_;
 	}
 
 	glDeleteProgram(handle_);

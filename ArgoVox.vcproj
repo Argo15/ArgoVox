@@ -1527,6 +1527,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Data\Shaders\g_buildVoxels.glsl"
+				>
+			</File>
+			<File
 				RelativePath=".\Data\Shaders\v_blur.glsl"
 				>
 			</File>

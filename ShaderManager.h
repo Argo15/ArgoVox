@@ -20,6 +20,7 @@ public:
 
     void initialize();
 	void loadShader(string sName, string sVertexShader, string sFragmentShader);
+	void loadShader(string sName, string sVertexShader, string sFragmentShader, string sGeometryShader);
 	void useShader(string sName);
 	void disableShader(string sName);
 	void deleteShader(string sName);

@@ -31,6 +31,11 @@ void ShaderManager::compileProgram(GLSLProgram *program, string sShaderName)
 		program->fragment_->getShaderLog(sLog);
 		Logging::GRAPHICS->error("Fragment shader failed to compile " + sShaderName + "\n" + sLog);
 	}
+	if (program->geometry_ && !program->geometry_->isCompiled())
+	{	
+		program->geometry_->getShaderLog(sLog);
+		Logging::GRAPHICS->error("geometry shader failed to compile " + sShaderName + "\n" + sLog);
+	}
 }
 
 void ShaderManager::initialize()
@@ -42,7 +47,7 @@ void ShaderManager::initialize()
 	loadShader("Final", "Data/Shaders/v_final.glsl","Data/Shaders/f_final.glsl");
 	loadShader("DirectShadow", "Data/Shaders/v_dShadow.glsl","Data/Shaders/f_dShadow.glsl");
 	loadShader("Voxel", "Data/Shaders/v_drawVoxels.glsl","Data/Shaders/f_drawVoxels.glsl");
-	loadShader("BuildVoxels", "Data/Shaders/v_buildVoxels.glsl","Data/Shaders/f_buildVoxels.glsl");
+	loadShader("BuildVoxels", "Data/Shaders/v_buildVoxels.glsl","Data/Shaders/f_buildVoxels.glsl","Data/Shaders/g_buildVoxels.glsl");
 	loadShader("GlossyReflection", "Data/Shaders/v_glossy.glsl","Data/Shaders/f_glossy.glsl");
 	loadShader("Indirect", "Data/Shaders/v_indirect.glsl","Data/Shaders/f_indirect.glsl");
 	loadShader("BuildMipmap", "Data/Shaders/v_buildMipmap.glsl","Data/Shaders/f_buildMipmap.glsl");
@@ -56,6 +61,13 @@ void ShaderManager::initialize()
 void ShaderManager::loadShader(string sName, string sVertexShader, string sFragmentShader)
 {
 	GLSLProgram *glslProgram = new GLSLProgram(sVertexShader,sFragmentShader);
+	compileProgram(glslProgram, sName);
+	m_shaders[sName] = glslProgram;
+}
+
+void ShaderManager::loadShader(string sName, string sVertexShader, string sFragmentShader, string sGeometryShader)
+{
+	GLSLProgram *glslProgram = new GLSLProgram(sVertexShader,sFragmentShader,sGeometryShader);
 	compileProgram(glslProgram, sName);
 	m_shaders[sName] = glslProgram;
 }

@@ -25,11 +25,12 @@ class GLSLProgram
 {
 public:
 	
-	GLSLShader *vertex_, *fragment_;
+	GLSLShader *vertex_, *fragment_, *geometry_;
 
 	GLSLProgram();
 	GLSLProgram(const std::string &shader, unsigned int shaderType=GL_VERTEX_SHADER_ARB);
 	GLSLProgram(const std::string &vertexShader, const std::string &fragmentShader);
+	GLSLProgram(const std::string &vertexShader, const std::string &fragmentShader, const std::string &geometryShader);
 	~GLSLProgram();
   
 	void attach(GLSLShader &shader);

@@ -26,36 +26,40 @@ uniform sampler2DShadow shadowMap;
 uniform mat4 lightMatrix;
 uniform int voxelGridSize;
 uniform int numVoxels;
-in vec3 worldPos;
-in vec3 normal;
-in vec3 tangent;
-in vec3 bitangent;
-in vec2 texCoord;
+
+in VertexData {
+	vec3 worldPos;
+    vec3 normal;
+	vec3 tangent;
+	vec3 bitangent;
+    vec2 texCoord;
+} VertexIn;
+
 out vec4 fragColor;
 
 void main() {
 	mat3 tangmat;
-	tangmat[0] = normalize(tangent);
-	tangmat[1] = normalize(bitangent);
-	tangmat[2] = normalize(normal);
+	tangmat[0] = normalize(VertexIn.tangent);
+	tangmat[1] = normalize(VertexIn.bitangent);
+	tangmat[2] = normalize(VertexIn.normal);
 	vec3 normalcolor;
 	if (material.normalenabled)
-		normalcolor = texture2D(normalmap,texCoord).xyz;
+		normalcolor = texture2D(normalmap,VertexIn.texCoord).xyz;
 	else 
 		normalcolor = vec3(0.5,0.5,1.0);
 	normalcolor = normalcolor*2.0-vec3(1.0);
 	vec3 _normal = normalize(tangmat*normalcolor);
-	vec4 texcolor = texture2D(tex,texCoord);
+	vec4 texcolor = texture2D(tex,VertexIn.texCoord);
 	
-	vec4 shadowCoord = lightMatrix * vec4(worldPos, 1.0);
+	vec4 shadowCoord = lightMatrix * vec4(VertexIn.worldPos, 1.0);
 	float shadow = textureProj(shadowMap, shadowCoord + vec4(0, 0, -0.002, 0.0));
 	
 	vec3 lightDir = normalize(light.direction);
 	vec4 lightcolor = clamp(vec4(light.color,1.0) * (light.ambient + shadow * light.diffuse*clamp(dot(_normal,-lightDir),0.0,1.0)),0.0,1.0);
 
-	uint xPos = uint(((worldPos.x+voxelGridSize/2)/voxelGridSize)*(numVoxels));
-	uint yPos = uint(((worldPos.y+voxelGridSize/2)/voxelGridSize)*(numVoxels));
-	uint zPos = uint(((worldPos.z+voxelGridSize/2)/voxelGridSize)*(numVoxels));
+	uint xPos = uint(((VertexIn.worldPos.x+voxelGridSize/2)/voxelGridSize)*(numVoxels));
+	uint yPos = uint(((VertexIn.worldPos.y+voxelGridSize/2)/voxelGridSize)*(numVoxels));
+	uint zPos = uint(((VertexIn.worldPos.z+voxelGridSize/2)/voxelGridSize)*(numVoxels));
 	ivec3 voxelPos = ivec3(xPos, yPos, zPos);
 	
 	vec4 fragmentColor = clamp(lightcolor * vec4(material.color,1.0) * vec4(texcolor.rgb,1.0), vec4(0.0), vec4(1.0));

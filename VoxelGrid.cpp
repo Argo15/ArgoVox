@@ -57,13 +57,10 @@ void VoxelGrid::clear()
 
 void VoxelGrid::buildVoxels(DirectLight *light)
 {
-	Profiler::getInstance()->startProfile("Clear Voxels");
+	Profiler::getInstance()->startProfile("Build Voxels");
 	clear();
-	glFinish();
-	Profiler::getInstance()->endProfile();
 
 	m_voxelShadowMap->buildShadowMap(light);
-
 	View *view = new View();
 	view->viewport(0, 0, VOXEL_SIZE, VOXEL_SIZE);
 	view->set2D(-WORLD_SIZE/2.0, WORLD_SIZE/2.0, -WORLD_SIZE/2.0, WORLD_SIZE/2.0, 0, WORLD_SIZE);
@@ -71,20 +68,8 @@ void VoxelGrid::buildVoxels(DirectLight *light)
 	camera->setPosition(0,0,WORLD_SIZE/2.0);
 	camera->setLookAt(0,0,0);
 	camera->setUp(0,1.0f,0);
-	Profiler::getInstance()->startProfile("Build Voxels");
 	buildVoxels(view, camera, light);
-	camera->setPosition(0,WORLD_SIZE/2.0,0);
-	camera->setLookAt(0,0,0);
-	camera->setUp(0,0,1.0f);
-	buildVoxels(view, camera, light);
-	camera->setPosition(WORLD_SIZE/2.0,0,0);
-	camera->setLookAt(0,0,0);
-	camera->setUp(0,1.0f,0);
-	buildVoxels(view, camera, light);
-	glFinish();
-	Profiler::getInstance()->endProfile();
 	
-	Profiler::getInstance()->startProfile("Build Voxel Mipmap");
 	buildMipmap(1);
 	buildMipmap(2);
 	buildMipmap(3);
