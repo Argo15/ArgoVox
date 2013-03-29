@@ -1,7 +1,7 @@
 Draw Final avg: 1000
-Indirect Lighting avg: 32312
-Indirect Lighting Blur avg: 11117
-Reflection avg: 18979
-Draw Light avg: 14743
-Draw GBuffer avg: 12156
-Build Voxels avg: 17931
+Indirect Lighting avg: 16333
+Indirect Lighting Blur avg: 10666
+Reflection avg: 10666
+Draw Light avg: 14000
+Draw GBuffer avg: 10666
+Build Voxels avg: 16500

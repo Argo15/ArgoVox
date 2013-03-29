@@ -24,10 +24,13 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 {
 	int curMipmap = 0;
 	vec4 voxelColor = vec4(0.0);
-	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += voxelWidth[curMipmap])
+	float sliceRadius = 0;
+	for (float i = voxelWidth[curMipmap]*3; i < worldSize; i += sliceRadius*1.2)
 	{
-		float sliceRadius = i * tan(coneAngle);
-		
+		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
+			curMipmap++;
+		}
+		sliceRadius = i * tan(coneAngle);
 		vec3 reflection = direction * i;
 		if (dot(reflection, normal) > voxelWidth[curMipmap])
 		{
@@ -38,9 +41,6 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 			{
 				i = worldSize;
 			}
-		}
-		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
-			curMipmap++;
 		}
 	}
 	if (voxelColor.a > 0)
@@ -53,15 +53,14 @@ float rand(vec2 n)
   return 0.5 + 0.5 * fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* 43758.5453);
 }
 
-float numSamples = 6;
-float coneAngle = 0.387597;
-vec3 coneDirections[6] = vec3[](
-    vec3(0.578733, 0.567609, -0.585566),
-    vec3(-0.51358, 0.785338, -0.345659),
-    vec3(-0.467413, 0.356635, 0.808911),
-    vec3(0.385013, 0.715799, 0.582578),
-    vec3(0.984085, 0.17424, 0.0348934),
-    vec3(-0.857066, 0.0296906, -0.51435)
+float numSamples = 5;
+float coneAngle = 0.420534;
+vec3 coneDirections[5] = vec3[](
+    vec3(0.354783, 0.721332, 0.594818),
+    vec3(0.9729, 0.0308748, -0.229155),
+    vec3(-0.462702, 0.548613, -0.696369),
+    vec3(-0.625835, 0.2041, 0.752777),
+    vec3(0.398601, 0.774808, -0.490703)
 );
 
 void main() {
@@ -99,12 +98,13 @@ void main() {
 	tangmat[0] = normalize(bitangent);
 	tangmat[1] = normalize(normal);
 	tangmat[2] = normalize(tangent);
+	tangmat = tangmat * randYRot;
 	
 	vec4 voxelColor = vec4(0.0);
 	float coneEndArea = 2*3.14*(1-cos(coneAngle));
 	for (int i=0; i<numSamples; i++)
 	{
-		vec3 coneDir = tangmat * randYRot * coneDirections[i];
+		vec3 coneDir = tangmat * coneDirections[i];
 		float contribution = coneDirections[i].y * coneEndArea;
 		voxelColor += voxelConeTrace(worldPos.xyz, coneDir, normal, coneAngle) * contribution;
 	}

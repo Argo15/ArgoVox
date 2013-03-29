@@ -22,22 +22,23 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 {
 	int curMipmap = 0;
 	vec4 voxelColor = vec4(0.0);
-	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += voxelWidth[curMipmap]/2)
+	float sliceRadius = 0;
+	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += sliceRadius*1.5)
 	{
-		float sliceRadius = i * tan(coneAngle);
+		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
+			curMipmap++;
+		}
+		sliceRadius = i * tan(coneAngle);
 		vec3 reflection = direction * i;
 		if (dot(reflection, normal) > voxelWidth[curMipmap])
 		{
-			vec4 sampleColor = texture(voxelmap[curMipmap],((startPos+reflection+vec3(worldSize/2))/worldSize));
-			float contribution = (1.0-voxelColor.a);
+			vec4 sampleColor = texture(voxelmap[curMipmap],(startPos+reflection+vec3(worldSize/2))/worldSize);
+			float contribution = 1.0-voxelColor.a;
 			voxelColor += sampleColor*contribution;
 			if (voxelColor.a >= 0.99)
 			{
 				i = worldSize;
 			}
-		}
-		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
-			curMipmap++;
 		}
 	}
 	if (voxelColor.a > 0)
