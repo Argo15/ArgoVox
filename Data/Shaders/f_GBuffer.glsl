@@ -38,6 +38,8 @@ void main() {
 	
 	vec3 _tangent = normalize(tangmat*vec3(0.0,1.0,0.0));
 	vec3 _bitangent = normalize(tangmat*vec3(1.0,0.0,0.0));	
+	_tangent = cross(_bitangent, _normal);
+	_bitangent = cross(_normal, _tangent);
 
 	colorBuffer = vec4(material.color,1.0)*vec4(texcolor.rgb,1.0);
 	normalBuffer = vec4(_normal*vec3(0.5)+vec3(0.5),material.shininess);

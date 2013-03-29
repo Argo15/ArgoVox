@@ -17,13 +17,13 @@ private:
 	GLuint m_nFrameBuffer[2]; // Vertical, Horizontal
 
 	int m_nWidth, m_nHeight;
-	void blurPass(int id, string shader, GLuint nTex, View *view);
+	void blurPass(int id, string shader, GLuint nTex, GLuint nNormalTex, View *view);
 
 public:
 	BlurBuffer(int nWidth, int nHeight);
 	~BlurBuffer();
 
-	void drawToBuffer(GLuint nTex, View *view);
+	void drawToBuffer(GLuint nTex, GLuint nNormalTex, View *view);
 
 	void bind(int id);
 	void unbind();

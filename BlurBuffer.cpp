@@ -48,7 +48,7 @@ BlurBuffer::~BlurBuffer()
 	glDeleteFramebuffers(2,m_nFrameBuffer);
 }
 
-void BlurBuffer::blurPass(int id, string shader, GLuint nTex, View *view)
+void BlurBuffer::blurPass(int id, string shader, GLuint nTex, GLuint nNormalTex, View *view)
 {
 	GLSLProgram *glslProgram = ShaderManager::getInstance()->getShader(shader);
 	glslProgram->use();
@@ -73,16 +73,20 @@ void BlurBuffer::blurPass(int id, string shader, GLuint nTex, View *view)
 	glActiveTexture(GL_TEXTURE0); 
 	glBindTexture(GL_TEXTURE_2D, nTex);
 	glslProgram->sendUniform("bluringTex",0);
+	glActiveTexture(GL_TEXTURE1); 
+	glBindTexture(GL_TEXTURE_2D, nNormalTex);
+	glslProgram->sendUniform("normalTex",1);
 
 	drawScreenShader(0,0,1.0f,1.0f);
+	glFinish();
 	glslProgram->disable();
 	unbind();
 }
 
-void BlurBuffer::drawToBuffer(GLuint nTex, View *view)
+void BlurBuffer::drawToBuffer(GLuint nTex, GLuint nNormalTex, View *view)
 {
-	blurPass(HORIZONTAL, "HorizontalBlur", nTex, view);
-	blurPass(VERTICAL, "VerticalBlur", m_nBlurTex[HORIZONTAL], view);
+	blurPass(HORIZONTAL, "HorizontalBlur", nTex, nNormalTex, view);
+	blurPass(VERTICAL, "VerticalBlur", m_nBlurTex[HORIZONTAL], nNormalTex, view);
 }
 
 void BlurBuffer::bind(int id) 

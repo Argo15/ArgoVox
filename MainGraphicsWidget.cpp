@@ -187,8 +187,10 @@ void MainGraphicsWidget::deferredRender()
 
 	Profiler::getInstance()->startProfile("Indirect Lighting");
 	m_indirectBuffer->drawToBuffer(m_gBuffer->getDepthTex(), m_gBuffer->getTangentTex(), m_gBuffer->getBitangentTex(), m_gBuffer->getNormalTex(), m_gBuffer->getColorTex(), view, camera);	
-	m_blurBuffer->drawToBuffer(m_indirectBuffer->getIndirectTex(), view);
-	m_blurBuffer->drawToBuffer(m_blurBuffer->getBlurTex(), view);
+	Profiler::getInstance()->endProfile();
+	Profiler::getInstance()->startProfile("Indirect Lighting Blur");
+	m_blurBuffer->drawToBuffer(m_indirectBuffer->getIndirectTex(), m_gBuffer->getNormalTex(), view);
+	m_blurBuffer->drawToBuffer(m_blurBuffer->getBlurTex(), m_gBuffer->getNormalTex(), view);
 	Profiler::getInstance()->endProfile();
 
 	m_lightBuffer->drawToBuffer(m_gBuffer->getNormalTex(), m_gBuffer->getDepthTex(), m_gBuffer->getGlowTex(), view, camera);

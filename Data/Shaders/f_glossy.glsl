@@ -56,7 +56,7 @@ void main() {
 	{
 		discard;
 	}
-	float coneAngle = (1.0 - texture2D(normalTex,texCoord).a) * 3.14/16;
+	float coneAngle = (1.25 - texture2D(normalTex,texCoord).a) * 3.14/16;
 	
 	float hyperDepth = texture2D(depthTex,texCoord).r;
 	vec4 screenPos = vec4(texCoord.s*2.0-1.0, texCoord.t*2.0-1.0, hyperDepth*2.0-1.0, 1.0);
