@@ -22,8 +22,11 @@ vec4 voxelConeTrace(vec3 startPos, vec3 direction, vec3 normal, float coneAngle)
 {
 	int curMipmap = 0;
 	vec4 voxelColor = vec4(0.0);
-	float sliceRadius = 0;
-	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += sliceRadius*1.5)
+	float sliceRadius = voxelWidth[curMipmap] * 2 * tan(coneAngle);
+	while (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
+		curMipmap++;
+	}
+	for (float i = voxelWidth[curMipmap]*2; i < worldSize; i += voxelWidth[curMipmap]/2)
 	{
 		if (curMipmap < 3 && sliceRadius > voxelWidth[curMipmap]){
 			curMipmap++;

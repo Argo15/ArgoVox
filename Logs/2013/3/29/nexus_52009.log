@@ -1,0 +1,30 @@
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Textures
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Textures
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Models
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Models
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Materials
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Materials
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Shaders
+14:26:49 3/29/2013 [GRAPHICS] [ERROR]: geometry shader failed to compile BuildVoxels
+0(57) : error C1035: assignment of incompatible types
+
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Shaders
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Tiles
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Chunks
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Chunks
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Loading Tiles
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Done Loading Tiles
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: gBuffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Light Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Glossy Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Indirect Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Blur Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Blur Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Final Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [INFO]: Depth Buffer Done
+14:26:49 3/29/2013 [GRAPHICS] [ERROR]: projectionMatrix - is not a valid uniform variable name

@@ -31,7 +31,7 @@ out VertexData {
   vec4 newPosition[3];
   if (normalVec.x > normalVec.y && normalVec.x > normalVec.z)
   {
-	direction = 0;	// x focused
+	// x focused
 	for (int i=0; i<3; i++)
 	{
 		newPosition[i] = gl_in[i].gl_Position;
@@ -41,7 +41,7 @@ out VertexData {
   }
   else if (normalVec.y > normalVec.x && normalVec.y > normalVec.z)
   {
-	direction = 1;  // y focused
+	// y focused
 	for (int i=0; i<3; i++)
 	{
 		newPosition[i] = gl_in[i].gl_Position;
@@ -51,7 +51,7 @@ out VertexData {
   }
   else
   {
-	direction = 2;  // z focused
+	// z focused
 	for (int i=0; i<3; i++)
 	{
 		newPosition[i] = gl_in[i].gl_Position;
