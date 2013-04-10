@@ -59,11 +59,11 @@ float rand(vec2 n)
 float numSamples = 5;
 float coneAngle = 0.420534;
 vec3 coneDirections[5] = vec3[](
-    vec3(0.354783, 0.721332, 0.594818),
-    vec3(0.9729, 0.0308748, -0.229155),
-    vec3(-0.462702, 0.548613, -0.696369),
-    vec3(-0.625835, 0.2041, 0.752777),
-    vec3(0.398601, 0.774808, -0.490703)
+    vec3(0.812218, 0.0147143, 0.583169),
+    vec3(-0.576124, 0.662468, 0.478766),
+    vec3(0.0543743, 0.943602, -0.326587),
+    vec3(0.479263, 0.271153, -0.834735),
+    vec3(-0.626188, 0.146382, -0.765807)
 );
 
 void main() {
@@ -112,7 +112,7 @@ void main() {
 		voxelColor += voxelConeTrace(worldPos.xyz, coneDir, normal, coneAngle) * contribution;
 	}
 	
-	voxelColor *= 0.90;
+	voxelColor *= 1.0;
 	
 	vec4 diffuse = texture2D(diffuseTex,texCoord);
 	

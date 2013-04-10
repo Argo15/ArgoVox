@@ -36,11 +36,22 @@ void main() {
 	vec3 _normal = normalize(tangmat*normalcolor);
 	vec4 texcolor = texture2D(tex,texCoord);
 	
-	vec3 _tangent = normalize(tangmat*vec3(0.0,1.0,0.0));
-	vec3 _bitangent = normalize(tangmat*vec3(1.0,0.0,0.0));	
-	_tangent = cross(_bitangent, _normal);
-	_bitangent = cross(_normal, _tangent);
+	vec3 _tangent;
+	vec3 _bitangent;
 
+	if (normal.y <= 0.999 && normal.y >= -0.999)
+	{
+		_tangent = cross(vec3(0,1,0), normal);
+		_bitangent = cross(normal, _tangent);
+		_tangent = cross(_bitangent, normal);
+	}
+	else
+	{
+		_tangent = cross(vec3(1,0,0), normal);
+		_bitangent = cross(normal, _tangent);
+		_tangent = cross(_bitangent, normal);
+	}
+	
 	colorBuffer = vec4(material.color,1.0)*vec4(texcolor.rgb,1.0);
 	normalBuffer = vec4(_normal*vec3(0.5)+vec3(0.5),material.shininess);
 	glowBuffer = vec4(material.emission,material.specular);
