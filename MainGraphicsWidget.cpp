@@ -146,15 +146,12 @@ void MainGraphicsWidget::voxelRender()
 	cameraInverse = glm::inverse(cameraInverse);
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
 	glslProgram->sendUniform("worldSize", WORLD_SIZE);
-	//glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
+	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
 	//glslProgram->sendUniform("mipLevel", VoxelGrid::getInstance()->getMipLevel());
 
 	int mipFactor = pow(2.0, VoxelGrid::getInstance()->getMipLevel());
 	
-	glActiveTexture(GL_TEXTURE8);
-	glEnable(GL_TEXTURE_3D);
-	VoxelGrid::getInstance()->bind(VoxelGrid::getInstance()->getMipLevel());
-	glslProgram->sendUniform("voxelmap", 8);
+	VoxelGrid::getInstance()->bind(0, VoxelGrid::getInstance()->getMipLevel(), GL_READ_WRITE);
 
 	//glEnable(GL_POINT_SMOOTH);
 	glPointSize(10.0f*mipFactor);
