@@ -11,7 +11,7 @@ enum RenderState
 	SPECULAR,
 	INDIRECT,
 	REFLECTION,
-	SSAO, 
+	VOXELMAP, 
 	VOXEL
 };
 

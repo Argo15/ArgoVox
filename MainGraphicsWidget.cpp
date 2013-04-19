@@ -124,7 +124,9 @@ void MainGraphicsWidget::forwardRender()
 void MainGraphicsWidget::voxelRender()
 {
 	VoxelGrid::getInstance()->buildVoxels(m_lightBuffer->getLight());
+	//glClearColor(1.0,1.0,0.0,0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.0,0.0,0.0,0.0);
 	MatrixManager::getInstance()->putMatrix4(MODELVIEW, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix4(PROJECTION, glm::mat4(1.0f));
 	MatrixManager::getInstance()->putMatrix3(NORMAL, glm::mat3(1.0f));
@@ -151,7 +153,7 @@ void MainGraphicsWidget::voxelRender()
 
 	int mipFactor = pow(2.0, VoxelGrid::getInstance()->getMipLevel());
 	
-	VoxelGrid::getInstance()->bind(0, VoxelGrid::getInstance()->getMipLevel(), GL_READ_WRITE);
+	VoxelGrid::getInstance()->bind(0, 1, VoxelGrid::getInstance()->getMipLevel(), GL_READ_WRITE);
 
 	//glEnable(GL_POINT_SMOOTH);
 	glPointSize(10.0f*mipFactor);
@@ -240,6 +242,10 @@ void MainGraphicsWidget::deferredRender()
 	if (RenderStateManager::RENDERSTATE == SPECULAR)
 	{
 		m_lightBuffer->bindGlowTex();
+	}
+	if (RenderStateManager::RENDERSTATE == VOXELMAP)
+	{
+		VoxelGrid::getInstance()->bind(0);
 	}
 	glColor3f(1.0f,1.0f,1.0f);
 	drawScreen(0.0,0.0,1.0,1.0);
