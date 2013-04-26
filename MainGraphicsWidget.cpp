@@ -149,6 +149,8 @@ void MainGraphicsWidget::voxelRender()
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
 	glslProgram->sendUniform("worldSize", WORLD_SIZE);
 	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
+	glslProgram->sendUniform("hashmapSize", HASHMAP_SIZE);
+	glslProgram->sendUniform("hashmapPrime", HASHING_PRIME);
 	//glslProgram->sendUniform("mipLevel", VoxelGrid::getInstance()->getMipLevel());
 
 	int mipFactor = pow(2.0, VoxelGrid::getInstance()->getMipLevel());
@@ -165,7 +167,7 @@ void MainGraphicsWidget::voxelRender()
 		{
 			for (float z=-(WORLD_SIZE/2.0)+(voxelWidth/2.0); z<(WORLD_SIZE/2.0); z+=voxelWidth)
 			{
-				glVertex3f(x,y,z);
+				glVertex3f(x+0.001,y+0.001,z+0.001);
 			}
 		}
 	}
@@ -241,7 +243,7 @@ void MainGraphicsWidget::deferredRender()
 	}
 	if (RenderStateManager::RENDERSTATE == SPECULAR)
 	{
-		m_lightBuffer->bindGlowTex();
+		VoxelGrid::getInstance()->bindPos(0);
 	}
 	if (RenderStateManager::RENDERSTATE == VOXELMAP)
 	{

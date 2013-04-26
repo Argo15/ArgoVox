@@ -20,9 +20,10 @@ VoxelGrid::VoxelGrid()
 	glActiveTexture(GL_TEXTURE8);
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(4, m_nTextureId);
-	m_defaultValues = new char[VOXEL_SIZE*VOXEL_SIZE*4];
-	m_defaultPos = new float[VOXEL_SIZE*VOXEL_SIZE*4];
-	for (int i=0; i<VOXEL_SIZE*VOXEL_SIZE*4; i++)
+	glGenTextures(1, m_nPositionMap);
+	m_defaultValues = new char[HASHMAP_SIZE*HASHMAP_SIZE*4];
+	m_defaultPos = new float[HASHMAP_SIZE*HASHMAP_SIZE*4];
+	for (int i=0; i<HASHMAP_SIZE*HASHMAP_SIZE*4; i++)
 	{
 		m_defaultValues[i] = (char)0.0f;
 		m_defaultPos[i] = 0.0f;
@@ -30,20 +31,19 @@ VoxelGrid::VoxelGrid()
 	for (int i=0; i<4; i++)
 	{
 		glBindTexture(GL_TEXTURE_2D, m_nTextureId[i]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_defaultValues);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, HASHMAP_SIZE, HASHMAP_SIZE, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_defaultValues);
+		
+		glBindTexture(GL_TEXTURE_2D, m_nPositionMap[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, HASHMAP_SIZE, HASHMAP_SIZE, 0, GL_RGBA, GL_FLOAT, m_defaultPos);
 	}
-	
-	glGenTextures(1, &m_nPositionMap);
-	glBindTexture(GL_TEXTURE_2D, m_nPositionMap);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, VOXEL_SIZE, VOXEL_SIZE, 0, GL_RGBA, GL_FLOAT, m_defaultPos);
 
 	glActiveTextureARB(GL_TEXTURE0);
 
@@ -58,10 +58,11 @@ void VoxelGrid::clear()
 	for (int i=0; i<4; i++)
 	{
 		glBindTexture(GL_TEXTURE_2D, m_nTextureId[i]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, VOXEL_SIZE / pow(2.0, i), VOXEL_SIZE / pow(2.0, i), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_defaultValues);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, HASHMAP_SIZE / pow(2.0, i), HASHMAP_SIZE / pow(2.0, i), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_defaultValues);
+
+		glBindTexture(GL_TEXTURE_2D, m_nPositionMap[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, HASHMAP_SIZE, HASHMAP_SIZE, 0, GL_RGBA, GL_FLOAT, m_defaultPos);
 	}
-	glBindTexture(GL_TEXTURE_2D, m_nPositionMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, VOXEL_SIZE, VOXEL_SIZE, 0, GL_RGBA, GL_FLOAT, m_defaultPos);
 	glActiveTextureARB(GL_TEXTURE0);
 }
 
@@ -80,7 +81,7 @@ void VoxelGrid::buildVoxels(DirectLight *light)
 	camera->setUp(0,1.0f,0);
 	buildVoxels(view, camera, light);
 	
-	//buildMipmap(1);
+	buildMipmap(1);
 	//buildMipmap(2);
 	//buildMipmap(3);
 	glFinish();
@@ -117,6 +118,8 @@ void VoxelGrid::buildVoxels(View *view, Camera *camera, DirectLight *light)
 	glslProgram->sendUniform("invCameraMatrix", &cameraInverse[0][0]);
 	glslProgram->sendUniform("worldSize", WORLD_SIZE);
 	glslProgram->sendUniform("numVoxels", VOXEL_SIZE);
+	glslProgram->sendUniform("hashmapSize", HASHMAP_SIZE);
+	glslProgram->sendUniform("hashmapPrime", HASHING_PRIME);
 
 	light->sendToShader("BuildVoxels");
 
@@ -160,9 +163,11 @@ void VoxelGrid::buildMipmap(int mipLevel)
 
 	glslProgram->sendUniform("projectionMatrix", &MatrixManager::getInstance()->getMatrix4(PROJECTION)[0][0]);
 	glslProgram->sendUniform("numVoxels", nVoxelSize);
+	glslProgram->sendUniform("hashmapSize", HASHMAP_SIZE);
+	glslProgram->sendUniform("hashmapPrime", HASHING_PRIME);
 
 	this->bind(0, 1, mipLevel-1, GL_READ_ONLY);
-	this->bind(1, 1, mipLevel, GL_WRITE_ONLY);
+	this->bind(2, 3, mipLevel, GL_WRITE_ONLY);
 
 	drawScreenShader(0,0,1.0f,1.0f);
 
@@ -174,10 +179,15 @@ void VoxelGrid::bind(GLuint mipLevel)
 	glBindTexture(GL_TEXTURE_2D, m_nTextureId[mipLevel]);
 }
 
+void VoxelGrid::bindPos(GLuint mipLevel)
+{
+	glBindTexture(GL_TEXTURE_2D, m_nPositionMap[mipLevel]);
+}
+
 void VoxelGrid::bind(GLuint gridUnit, GLuint posUnit, GLuint mipLevel, GLenum access)
 {
 	glBindImageTexture(gridUnit, m_nTextureId[mipLevel], 0, GL_TRUE, 0, access, GL_RGBA8);
-	glBindImageTexture(posUnit, m_nPositionMap, 0, GL_TRUE, 0, access, GL_RGBA16);
+	glBindImageTexture(posUnit, m_nPositionMap[mipLevel], 0, GL_TRUE, 0, access, GL_RGBA16);
 }
 	
 GLuint VoxelGrid::getTextureId(int mipmap)

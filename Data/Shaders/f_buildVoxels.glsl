@@ -27,6 +27,8 @@ uniform sampler2DShadow shadowMap;
 uniform mat4 lightMatrix;
 uniform int worldSize;
 uniform int numVoxels;
+uniform int hashmapSize;
+uniform int hashmapPrime;
 
 in VertexData {
 	vec3 worldPos;
@@ -38,34 +40,12 @@ in VertexData {
 
 out vec4 fragColor;
 
-ivec2 hashPos3D(ivec3 voxelPos)
+ivec2 hashPos3D(ivec3 voxelPos, int offset)
 {
-	return ivec2(
-		mod(voxelPos.x + voxelPos.z, numVoxels), 
-		mod(voxelPos.y + voxelPos.z, numVoxels)
-	);
-}
-
-ivec3 getSavedPos(ivec2 hashedPos)
-{
-	vec3 posColor = imageLoad(voxelPosMap,hashedPos).xyz;
-	ivec3 savedPos = ivec3(posColor.x*numVoxels, posColor.y*numVoxels, posColor.z*numVoxels);
-	return savedPos;
-}
-
-ivec2 incrementHashPos(ivec2 hashedPos, int amt)
-{
-	hashedPos.x += amt;
-	if (hashedPos.x >= numVoxels)
-	{
-		hashedPos.y++;
-		hashedPos.x -= numVoxels;
-	}
-	if (hashedPos.y >= numVoxels)
-	{
-		hashedPos.y -= numVoxels;
-	}
-	return hashedPos;
+	// int hash value
+	int i = (voxelPos.x*numVoxels*numVoxels + voxelPos.y*numVoxels + voxelPos.z + offset) % hashmapPrime;
+	// 2D hash position
+	return ivec2(mod(i, hashmapSize), i/hashmapSize);
 }
 
 void storeIfBrighter(ivec2 hashedPos, vec4 colorToStore)
@@ -79,19 +59,19 @@ void storeIfBrighter(ivec2 hashedPos, vec4 colorToStore)
 	}
 }
 
-void writeVoxelPos(vec3 worldPos, vec4 fragmentColor)
+void writeVoxelColor(vec3 worldPos, vec4 fragmentColor)
 {
 	uint xPos = uint(((worldPos.x+worldSize/2)/worldSize)*(numVoxels));
 	uint yPos = uint(((worldPos.y+worldSize/2)/worldSize)*(numVoxels));
 	uint zPos = uint(((worldPos.z+worldSize/2)/worldSize)*(numVoxels));
 	ivec3 voxelPos = ivec3(xPos, yPos, zPos);
-	ivec2 hashedPos = hashPos3D(voxelPos);
 	
 	int maxAttempts = 10;
-	
+	int offset = 0;
 	for (int i=0; i<maxAttempts; i++)
 	{
-		hashedPos = incrementHashPos(hashedPos, i);
+		offset += i;
+		ivec2 hashedPos = hashPos3D(voxelPos, offset);
 		vec4 savedPosColor = imageLoad(voxelPosMap,hashedPos);
 		vec4 posColor = vec4(0,0,0,1.0);
 		posColor.x = float(xPos)/float(numVoxels);
@@ -103,7 +83,7 @@ void writeVoxelPos(vec3 worldPos, vec4 fragmentColor)
 			imageStore(voxelmap,hashedPos,vec4(fragmentColor.rgb, 1.0));
 			return;
 		}
-		if (distance(savedPosColor.rgb, posColor.rgb) < 0.01)
+		if (distance(savedPosColor.rgb, posColor.rgb) < 0.0001)
 		{
 			storeIfBrighter(hashedPos, vec4(fragmentColor.rgb, 1.0));
 			return;
@@ -135,7 +115,7 @@ void main() {
 	fragmentColor += vec4(material.emission,1.0);
 	fragmentColor = clamp(fragmentColor, vec4(0.0), vec4(1.0));
 	
-	writeVoxelPos(VertexIn.worldPos, fragmentColor);
+	writeVoxelColor(VertexIn.worldPos, fragmentColor);
 
 	fragColor = vec4(material.shininess)+vec4(material.specular)+fragmentColor+vec4(_normal, 1.0)+vec4(1.0);
 } 

@@ -7,6 +7,8 @@
 #include "VoxelShadowMap.h"
 
 #define VOXEL_SIZE 64
+#define HASHMAP_SIZE 256
+#define HASHING_PRIME 59999
 #define WORLD_SIZE 8
 
 class VoxelGrid
@@ -18,7 +20,7 @@ private:
 	VoxelShadowMap *m_voxelShadowMap;
 
 	GLuint m_nTextureId[4];
-	GLuint m_nPositionMap;
+	GLuint m_nPositionMap[4];
 	char *m_defaultValues;
 	float *m_defaultPos;
 
@@ -32,6 +34,7 @@ public:
 	void buildVoxels(View *view, Camera *camera, DirectLight *light);
 	void buildMipmap(int mipLevel);
 	void bind(GLuint mipLevel);
+	void bindPos(GLuint mipLevel);
 	void bind(GLuint gridUnit, GLuint posUnit, GLuint mipLevel, GLenum access = GL_READ_WRITE);
 	GLuint getTextureId(int mipmap);
 	void setMipLevel(int nLevel);
